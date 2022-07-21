@@ -1,3 +1,4 @@
+//----------------------------------------------------------- Affichage du Produit ----------------------------------------------------------------------------------
 // recupération id d'un produit
 const getProductId = new URL(window.location.href).searchParams.get("id");
 console.log(" voici l'id du produit " + getProductId)
@@ -12,6 +13,7 @@ fetch("http://localhost:3000/api/products/"+getProductId)
 
 // affichage des produits
 function displayData(object) {
+    const id = object._id
     const altTxt = object.altTxt
     const imageUrl = object.imageUrl
     const name = object.name
@@ -62,4 +64,23 @@ function createColors(colors) {
     }
 }
 
-// gestion bouton ajout aux panier
+// ----------------------------------------- gestion bouton ajout aux panier -----------------------------------------------------------------------------------------------
+//click du bouton
+const btn = document.querySelector("#addToCart")
+btn.addEventListener("click", (e) => {
+    const id = getProductId;
+    const color = document.querySelector("#colors").value
+    const quantity = document.querySelector("#quantity").value
+    // rendre impossible de cliquer sur bouton si couleur et quantité sont non renseignées
+    if(color == null || color ==='' || quantity == null || quantity == 0){
+        alert("Veuillez choisir une couleur et indiquer une quantité S.V.P.")
+    }
+    //localstorage pour garder en mémoire données 
+    const data = {
+        id: id,
+        color: color,
+        quantity: quantity,
+    }
+    localStorage.setItem(id, JSON.stringify(data))//transforme des objet en string
+    window.location.href = "cart.html" // renvoie vers la page panier
+})
