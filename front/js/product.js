@@ -4,7 +4,7 @@ const getProductId = new URL(window.location.href).searchParams.get("id");
 console.log(" voici l'id du produit " + getProductId)
 
 // recupérer les données d'un produits à partir de l'id
-fetch("http://localhost:3000/api/products/"+getProductId)
+fetch(`http://localhost:3000/api/products/${getProductId}`)
     .then (response => response.json())
     .then (product => {
         console.log(product);
@@ -76,11 +76,13 @@ btn.addEventListener("click", (e) => {
         alert("Veuillez choisir une couleur et indiquer une quantité S.V.P.")
     }
     //localstorage pour garder en mémoire données 
+    tmp = []
     const data = {
         id: id,
         color: color,
         quantity: quantity,
     }
-    localStorage.setItem(id, JSON.stringify(data))//transforme des objet en string
+    tmp.push(data)
+    localStorage.setItem("tmp", JSON.stringify(tmp))//transforme des objet en chaine de caractère (string)
     window.location.href = "cart.html" // renvoie vers la page panier
 })
