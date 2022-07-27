@@ -74,15 +74,16 @@ btn.addEventListener("click", (e) => {
     // rendre impossible de cliquer sur bouton si couleur et quantité sont non renseignées
     if(color == null || color ==='' || quantity == null || quantity == 0){
         alert("Veuillez choisir une couleur et indiquer une quantité S.V.P.")
+        return // faire arreter la fonction afin de ne pas etre envoyer sur la page panier
     }
-    //localstorage pour garder en mémoire données 
+    //localstorage pour garder en mémoire données dans un tableau 
     tmp = []
     const data = {
         id: id,
         color: color,
-        quantity: quantity,
+        quantity: quantity
     }
-    tmp.push(data)
-    localStorage.setItem("tmp", JSON.stringify(tmp))//transforme des objet en chaine de caractère (string)
+    tmp.push(tmp)
+    localStorage.setItem("tmp", JSON.stringify(data))//transforme des objet en chaine de caractère (string)
     window.location.href = "cart.html" // renvoie vers la page panier
 })
