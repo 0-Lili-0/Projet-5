@@ -1,17 +1,29 @@
 //----------------------------------------------------------Partie Panier------------------------------------------------------------------------------------------------------
 // recupérer les données du local storage
-let item = localStorage.cart
-JSON.parse(localStorage.cart)
-console.log(item) 
-// recupérer des données des produits du panier depuis l'api
-for (let elements of item) {
-  fetch(`http://localhost:3000/api/products/${elements._id}`)
+function getPanier() {
+  let produit = localStorage.getItem("tmp")
+  console.log(produit) 
+  return JSON.parse(produit)
+}
+
+// recupérer les info du produit dans le panier
+const id = getPanier().id
+console.log("l'id du produit est : " + id)
+const color = getPanier().color
+console.log("la couleur du produit est : "+ color)
+const quantity = getPanier().quantity
+console.log("la quantité est : "+ quantity)
+
+// recupérer des données des produits du panier depuis l'api avec l'id
+function dataProduct() {
+  fetch(`http://localhost:3000/api/products/${id}`)
     .then (response => response.json())
-    .then (item => {
-        console.log(item)
-        displayItem(item)
+    .then (produit => {
+        console.log(produit)
+        
     });
-  }
+}
+
 /* <!--  <article class="cart__item" data-id="{product-ID}" data-color="{product-color}">
                 <div class="cart__item__img">
                   <img src="../images/product01.jpg" alt="Photographie d'un canapé">
@@ -33,43 +45,50 @@ for (let elements of item) {
                   </div>
                 </div>
               </article> --> */
-
-
 // affichage des produits
-function displayItem(item) {
-    const article = createArticle(item)
-    const div = createImage(item)
-    const cartItemContent = createCartItemContent(item)
-    const cartItemSetting = createCartItemSetting(setting)
-    const cartItemDelete = deleteItem(item)
+function displayItems(produit) {
+  const id = produit._id
+  const altTxt = produit.altTxt
+  const imageUrl = produit.imageUrl
+  const name = produit.name
+  const description = produit.description
+  const price = produit.price
+  const colors = produit.colors
 
-    displayArticle(article)
-    createImage(item)
+  const article = createArticle()
+  const divImage = createDivImage(imageUrl, altTxt)
+  const cartItemContent = createCartItemContent(produit)
+  const cartItemSetting = createCartItemSetting(setting)
+  const cartItemDelete = deleteItem(produit)
+
+  displayArticle(article)
+    createImage(produit)
 
     article.appendChild(div)
     article.appendChild(cartItemContent)
     article.appendChild(cartItemSetting)
     article.appendChild(cartItemDelete)
-    
+
 }
+
 // creation balise article
-function createArticle(item) {
+function createArticle(produit) {
     const article = document.createElement("article")
     article.classList.add("cart__item");
-    article.dataset.id = item.id
-    article.dataset.color = item.color
+    article.dataset.id = getPanier().id
+    article.dataset.color = getPanier().color
     return article
 }
 // affichage de l'article
 function displayArticle(article) {
-    document.querySelector("#cart__item").appendChild(article)
+    document.querySelector("#cart__items").appendChild(article)
 }
 // creation balise image produit
-function createImage(item) {
+function createDivImage(imageUrl,altTxt) {
     const div = document.createElement("div")
-    const image = document.createElement('img')
-    image.src = imageUrl
-    image.alt = altTxt
+    const image = document.createElement("img")
+    image.src = dataProduct().imageUrl
+    image.alt = dataProduct().altTxt
     div.classList.add(".cart__item__img")
     div.appendChild(image)
     return div
