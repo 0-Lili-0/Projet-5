@@ -1,24 +1,27 @@
 //----------------------------------------------------------Partie Panier------------------------------------------------------------------------------------------------------
 // recupérer les données du local storage
 function getPanier() {
-  let produit = localStorage.getItem("tmp")
-  console.log(produit) 
-  return JSON.parse(produit)
+  let produitBasket = localStorage.getItem("basket")
+  return JSON.parse(produitBasket)
+  
 }
 
 // recupérer les info du produit dans le panier
-const id = getPanier().id
+
+const id = getPanier()[0].id
 console.log("l'id du produit est : " + id)
-const color = getPanier().color
+const color = getPanier()[0].color
 console.log("la couleur du produit est : "+ color)
-const quantity = getPanier().quantity
+const quantity = getPanier()[0].quantity
 console.log("la quantité est : "+ quantity)
+
 
 // recupérer des données des produits du panier depuis l'api avec l'id
 function dataProduct() {
   fetch(`http://localhost:3000/api/products/${id}`)
     .then (response => response.json())
     .then (produit => {
+
         console.log(produit)
         
     });
@@ -54,3 +57,15 @@ do {
 
 //----------------------------------------------------------------Partie formulaire -----------------------------------------------------------------------------------------------
 // validation input du formulaire
+function validateForm(event)  {
+  let formValid = document.getElementById("order");
+  let prenom = document.getElementById("firstName").value;
+  let nom = document.getElementById("lastName").value;
+  let adresse = document.getElementById("address").value;
+  let ville = document.getElementById("city").value;
+  let email = document.getElementById("email").value;
+
+  formValid.addEventListener('click', validation);
+
+}
+

@@ -78,12 +78,16 @@ btn.addEventListener("click", (e) => {
     }
     //localstorage pour garder en mémoire données dans un tableau 
     tmp = []
+    // creation de l'objet à stocker dans le local storage
+    const index = 0
     const data = {
         id: id,
         color: color,
         quantity: quantity
     }
-    tmp.push(tmp)
-    localStorage.setItem("tmp", JSON.stringify(data))//transforme des objet en chaine de caractère (string)
+    tmp.push(data)
+        
+    localStorage.setItem("basket", JSON.stringify(tmp))//transforme des objet en chaine de caractère (string) pour le stockage dans le localstorage
+  
     window.location.href = "cart.html" // renvoie vers la page panier
 })
