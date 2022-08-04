@@ -64,7 +64,7 @@ function createColors(colors) {
     }
 }
 
-// ----------------------------------------- gestion bouton ajout aux panier -----------------------------------------------------------------------------------------------
+// ----------------------------------------- gestion bouton ajout aux panier et localStorage-----------------------------------------------------------------------------------------------
 //click du bouton
 const btn = document.querySelector("#addToCart")
 btn.addEventListener("click", (e) => {
@@ -77,17 +77,23 @@ btn.addEventListener("click", (e) => {
         return // faire arreter la fonction afin de ne pas etre envoyer sur la page panier
     }
     //localstorage pour garder en mémoire données dans un tableau 
-    tmp = []
+    let arrayBasket = []
     // creation de l'objet à stocker dans le local storage
-    const index = 0
-    const data = {
+    let data = {
         id: id,
         color: color,
         quantity: quantity
     }
-    tmp.push(data)
-        
-    localStorage.setItem("basket", JSON.stringify(tmp))//transforme des objet en chaine de caractère (string) pour le stockage dans le localstorage
   
+   if( JSON.parse(localStorage.getItem("basket")) !== null) // si il n'y a pas de donées
+    {
+        let myObject = JSON.parse(localStorage.getItem("basket")); // recupère les donnees deja ajouté
+        arrayBasket.push(myObject); //rajoute les données existante au tableau
+    }
+    // envoie data dans le tableau arrayBasket
+    arrayBasket.push(data);
+    // sauvegarde les donées dans le localstorage sous forme de chaine (string)
+    localStorage.setItem("basket", JSON.stringify(arrayBasket));
+
     window.location.href = "cart.html" // renvoie vers la page panier
 })
