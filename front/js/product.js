@@ -84,16 +84,28 @@ btn.addEventListener("click", (e) => {
         color: color,
         quantity: quantity
     }
-  
-   if( JSON.parse(localStorage.getItem("basket")) !== null) // si il n'y a pas de donées
-    {
-        let myObject = JSON.parse(localStorage.getItem("basket")); // recupère les donnees deja ajouté
-        arrayBasket.push(myObject); //rajoute les données existante au tableau
+//1 recupère tableau actuelle
+//2 check si storageContent null ou pas si null initailiser tableau et ajout tableau dans local storage si non recupère tableau et ajouter element dedans
+//3 convertir string en number
+    let retrieveArray = JSON.parse(localStorage.getItem("basket"))
+    if (retrieveArray) {  
+        for ( let element of retrieveArray ) {
+            if (element.id === data.id && element.color === data.color) {
+                element.quantity = element.quantity + data.quantity
+                localStorage.setItem("basket", JSON.stringify(retrieveArray))
+            } else {
+                retrieveArray.push(data)
+                localStorage.setItem("basket", JSON.stringify(retrieveArray))
+            }
+        }
+        
+    } else {
+        retrieveArray = []
+        retrieveArray.push(data)
+        localStorage.setItem("basket", JSON.stringify(retrieveArray))
     }
-    // envoie data dans le tableau arrayBasket
-    arrayBasket.push(data);
-    // sauvegarde les donées dans le localstorage sous forme de chaine (string)
-    localStorage.setItem("basket", JSON.stringify(arrayBasket));
 
-    window.location.href = "cart.html" // renvoie vers la page panier
+
+    // renvoie vers la page panier
+    window.location.href = "cart.html" 
 })

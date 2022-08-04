@@ -1,18 +1,17 @@
 //----------------------------------------------------------Partie Panier------------------------------------------------------------------------------------------------------
-// recupérer les données du local storage
+/*// recupérer les données du local storage
 function getPanier() {
   let produitBasket = localStorage.getItem("basket")
   return JSON.parse(produitBasket)
-  
 }
 
 // recupérer les info du produit dans le panier
 
-const id = getPanier()[0].id
+const id = getPanier()[].id
 console.log("l'id du produit est : " + id)
-const color = getPanier()[0].color
+const color = getPanier()[].color
 console.log("la couleur du produit est : "+ color)
-const quantity = getPanier()[0].quantity
+const quantity = getPanier()[].quantity
 console.log("la quantité est : "+ quantity)
 
 
@@ -68,4 +67,4 @@ function validateForm(event)  {
   formValid.addEventListener('click', validation);
 
 }
-
+*/
