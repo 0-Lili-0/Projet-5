@@ -86,25 +86,73 @@ btn.addEventListener("click", (e) => {
     }
 //1 recupère tableau actuelle
 //2 check si storageContent null ou pas si null initailiser tableau et ajout tableau dans local storage si non recupère tableau et ajouter element dedans
-//3 convertir string en number
+
+// tableau panier 
     let retrieveArray = JSON.parse(localStorage.getItem("basket"))
-    if (retrieveArray) {  
-        for ( let element of retrieveArray ) {
+    // si le panier est vide
+        if (retrieveArray !== null) {  
+        //pour tout les élement du panier
+        /*for ( let element of retrieveArray ) {
+            //si id et la couleur existe déjà ont additionne les quantité et on pousse dans le panier
             if (element.id === data.id && element.color === data.color) {
-                element.quantity = element.quantity + data.quantity
+                element.quantity = Number(element.quantity) + Number(data.quantity)
                 localStorage.setItem("basket", JSON.stringify(retrieveArray))
+                window.alert("boucle if");
+            // sinon on enregistre le produit dans le panier    
             } else {
+                window.alert("boucle else")
+                retrieveArray.push(data)
+                localStorage.setItem("basket", JSON.stringify(retrieveArray))
+                break
+            }
+        }*/
+        let IndiceTest = 0;
+        for ( let element of retrieveArray ) {
+            //si id et la couleur existe déjà ont additionne les quantité et on pousse dans le panier
+            if (element.id === data.id && element.color === data.color) {
+                element.quantity = Number(element.quantity) + Number(data.quantity)
+                localStorage.setItem("basket", JSON.stringify(retrieveArray))
+                //window.alert("boucle if");
+                IndiceTest = 1;
+                break
+            // sinon on enregistre le produit dans le panier    
+            } else {
+                //window.alert("boucle else")
+                //retrieveArray.push(data)
+                //localStorage.setItem("basket", JSON.stringify(retrieveArray))
+                IndiceTest = 2;
+            }
+        }
+        if(IndiceTest===2) {
+            retrieveArray.push(data)
+            localStorage.setItem("basket", JSON.stringify(retrieveArray))
+        }
+       /* let indexofRA = retrieveArray.indexOf(data.id, 0)
+        window.alert(indexofRA)
+        if (indexofRA === -1){
+            retrieveArray.push(data)
+            localStorage.setItem("basket", JSON.stringify(retrieveArray))
+        }
+        else
+        {
+            if(retrieveArray[indexofRA].id === data.id && retrieveArray[indexofRA].color === data.color)
+            {
+                retrieveArray[indexofRA].quantity = Number(retrieveArray[indexofRA].quantity) + Number(data.quantity)
+                localStorage.setItem("basket", JSON.stringify(retrieveArray))
+            }
+            else
+            {
                 retrieveArray.push(data)
                 localStorage.setItem("basket", JSON.stringify(retrieveArray))
             }
-        }
-        
+
+        }*/
+    // sinon on pousse et enregistre les données dans le panier    
     } else {
         retrieveArray = []
         retrieveArray.push(data)
         localStorage.setItem("basket", JSON.stringify(retrieveArray))
     }
-
 
     // renvoie vers la page panier
     window.location.href = "cart.html" 
