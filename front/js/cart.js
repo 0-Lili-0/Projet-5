@@ -4,33 +4,32 @@
 //3 creer et inseré les elements dans la page
 
 // recupérer les données du local storage
-function getPanier() {
-  let produitBasket = localStorage.getItem("basket")
-  console.log(produitBasket)
-  return JSON.parse(produitBasket)
-}
-
+let getBasket = localStorage.getItem("basket")
+  
 // recupérer les info du produit dans le panier
-for ( let element of getPanier()) {
-const id = getPanier().id
-const color = getPanier().color
-const quantity = getPanier().quantity
-
-}
-
+let produitBasket = JSON.parse(getBasket)
+console.log(produitBasket)
+   
 // recupérer des données des produits du panier depuis l'api avec l'id
 function dataProduct() {
-  fetch(`http://localhost:3000/api/products/${id}`)
-    .then (response => response.json())
-    .then (produit => {
-
-        console.log(produit)
-        //displayProduit(produit)
-    });
+  const id = produitBasket.id
+  for (let element of produitBasket) {
+  
+    fetch(`http://localhost:3000/api/products/${id}`)
+      .then (response => response.json())
+      .then (produit => {
+        //for (let element of produit) {
+          console.log(dataProduct())
+        //}
+          //displayProduit(produit)
+      });
+  }
 }
+  
+  
 
-// affichage des produits du panier
-/*function displayProduit(Produit) {
+/*// affichage des produits du panier
+function displayProduit(Produit) {
   const cartItem = document.getElementById("cart__Items")
 
   cartItem = document.querySelector("#cart__items")
@@ -110,7 +109,7 @@ function dataProduct() {
 
 //----------------------------------------------------------------Partie formulaire -----------------------------------------------------------------------------------------------
 // validation input du formulaire
-function validateForm(event)  {
+/*function validateForm(event)  {
   let formValid = document.getElementById("order");
   let prenom = document.getElementById("firstName").value;
   let nom = document.getElementById("lastName").value;
@@ -120,5 +119,5 @@ function validateForm(event)  {
 
   formValid.addEventListener('click', validation);
 
-}
+}*/
 

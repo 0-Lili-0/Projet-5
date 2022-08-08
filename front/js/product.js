@@ -91,69 +91,32 @@ btn.addEventListener("click", (e) => {
     let retrieveArray = JSON.parse(localStorage.getItem("basket"))
     // si le panier est vide
         if (retrieveArray !== null) {  
-        //pour tout les élement du panier
-        /*for ( let element of retrieveArray ) {
-            //si id et la couleur existe déjà ont additionne les quantité et on pousse dans le panier
-            if (element.id === data.id && element.color === data.color) {
-                element.quantity = Number(element.quantity) + Number(data.quantity)
-                localStorage.setItem("basket", JSON.stringify(retrieveArray))
-                window.alert("boucle if");
-            // sinon on enregistre le produit dans le panier    
-            } else {
-                window.alert("boucle else")
-                retrieveArray.push(data)
-                localStorage.setItem("basket", JSON.stringify(retrieveArray))
-                break
-            }
-        }*/
+        // variable test
         let IndiceTest = 0;
+        //pour tout les élement du panier
         for ( let element of retrieveArray ) {
             //si id et la couleur existe déjà ont additionne les quantité et on pousse dans le panier
             if (element.id === data.id && element.color === data.color) {
                 element.quantity = Number(element.quantity) + Number(data.quantity)
                 localStorage.setItem("basket", JSON.stringify(retrieveArray))
-                //window.alert("boucle if");
                 IndiceTest = 1;
                 break
-            // sinon on enregistre le produit dans le panier    
+            // sinon on test variable    
             } else {
-                //window.alert("boucle else")
-                //retrieveArray.push(data)
-                //localStorage.setItem("basket", JSON.stringify(retrieveArray))
                 IndiceTest = 2;
             }
         }
+        //on ousse et sauve les donées dans le localStorage
         if(IndiceTest===2) {
             retrieveArray.push(data)
             localStorage.setItem("basket", JSON.stringify(retrieveArray))
         }
-       /* let indexofRA = retrieveArray.indexOf(data.id, 0)
-        window.alert(indexofRA)
-        if (indexofRA === -1){
-            retrieveArray.push(data)
-            localStorage.setItem("basket", JSON.stringify(retrieveArray))
-        }
-        else
-        {
-            if(retrieveArray[indexofRA].id === data.id && retrieveArray[indexofRA].color === data.color)
-            {
-                retrieveArray[indexofRA].quantity = Number(retrieveArray[indexofRA].quantity) + Number(data.quantity)
-                localStorage.setItem("basket", JSON.stringify(retrieveArray))
-            }
-            else
-            {
-                retrieveArray.push(data)
-                localStorage.setItem("basket", JSON.stringify(retrieveArray))
-            }
-
-        }*/
-    // sinon on pousse et enregistre les données dans le panier    
-    } else {
+        // sinon on pousse et enregistre les données dans le panier    
+        } else {
         retrieveArray = []
         retrieveArray.push(data)
         localStorage.setItem("basket", JSON.stringify(retrieveArray))
     }
-
     // renvoie vers la page panier
     window.location.href = "cart.html" 
 })
