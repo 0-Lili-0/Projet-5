@@ -11,6 +11,20 @@ fetch(`http://localhost:3000/api/products/${getProductId}`)
         displayData(product)
     });
 
+
+
+// Affichage des infos du produits
+function affichageProduit(element) {
+let image = document.querySelector("item__img")
+let titre = document.querySelector("title")
+let prix = document.querySelector("price")
+let description = document.querySelector("description")
+let options = document.querySelector("colors")
+//for(let element of colors)
+
+}
+
+
 // affichage des produits
 function displayData(object) {
     const id = object._id
@@ -63,6 +77,7 @@ function createColors(colors) {
         });
     }
 }
+
 
 // ----------------------------------------- gestion bouton ajout aux panier et localStorage-----------------------------------------------------------------------------------------------
 //click du bouton

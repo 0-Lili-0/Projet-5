@@ -4,29 +4,76 @@
 //3 creer et inseré les elements dans la page
 
 // recupérer les données du local storage
-let getBasket = localStorage.getItem("basket")
-  
-// recupérer les info du produit dans le panier
-let produitBasket = JSON.parse(getBasket)
+let basket = localStorage.getItem("basket")
+let produitBasket = JSON.parse(basket)
+
+function getBasket() {
+  // si panier est vide renvoie tableau vide
+  if (basket === null) {
+    return []
+    //sinon renvoie le panier
+  } else {
+    return produitBasket
+  }
+} 
+// faire console log pour voir le rendu du panier
 console.log(produitBasket)
    
 // recupérer des données des produits du panier depuis l'api avec l'id
-function dataProduct() {
-  const id = produitBasket.id
-  for (let element of produitBasket) {
-  
+function allProduct(basket) {
+  const id = produitBasket[i].id
     fetch(`http://localhost:3000/api/products/${id}`)
       .then (response => response.json())
       .then (produit => {
-        //for (let element of produit) {
-          console.log(dataProduct())
-        //}
-          //displayProduit(produit)
-      });
-  }
+        array.forEach(element => {
+          console.log()
+        });
+          console.log(produit)
+        })
+};
+
+
+
+//afficher les produits du panier
+// Lieu d affichage du panier
+const displayBasket = document.querySelector('#cart__items')
+
+let structureBasket = []
+
+for (let el = 0; el < produitBasket.length; el ++){
+
+  structureBasket = structureBasket + `
+  <article class="cart__item" date-id="${produitBasket[el].id}" date-color="${produitBasket[el].color}"
+    <div class="cart__item__img">
+      <img src="${}" alt="${}">
+    </div>
+    <div class="cart__item__content">
+     <div class="cart__item__content__description">
+      <h2>${}</h2>
+      <p>${}</p>
+      <p>${}</p>
+     </div>
+     <div class="cart__item__content__setting">
+      <div class="cart__item__content__setting_quanity>
+        <p>Qté :${produitBasket[el].quantity}</p>
+        <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${produitBasket[el].quantity}">
+      </div>
+      <div class="cart__item__content__setting__delete">
+        <p class="deleteItem">Supprimer</p>
+      </div>
+    </div>
+  </div>
+</article>`
+
+displayBasket.innerHTML = structureBasket;
 }
-  
-  
+
+// supprimer produit du panier
+
+// calcul quantité total de produit du panier
+
+
+//calcul prix total du panier
 
 /*// affichage des produits du panier
 function displayProduit(Produit) {
