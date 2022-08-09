@@ -4,69 +4,112 @@
 //3 creer et inseré les elements dans la page
 
 // recupérer les données du local storage
-let basket = localStorage.getItem("basket")
-let produitBasket = JSON.parse(basket)
+let basket = JSON.parse(localStorage.getItem("basket"))
+console.table(basket)
 
-function getBasket() {
-  // si panier est vide renvoie tableau vide
-  if (basket === null) {
-    return []
-    //sinon renvoie le panier
-  } else {
-    return produitBasket
-  }
-} 
-// faire console log pour voir le rendu du panier
-console.log(produitBasket)
-   
-// recupérer des données des produits du panier depuis l'api avec l'id
-function allProduct(basket) {
-  const id = produitBasket[i].id
-    fetch(`http://localhost:3000/api/products/${id}`)
-      .then (response => response.json())
-      .then (produit => {
-        array.forEach(element => {
-          console.log()
-        });
-          console.log(produit)
-        })
-};
+ // recuperer les infos des produit present dans le panier depuis l'api
+ for( let object of basket) {
+  let objectId = object.id;
+  let objectColor = object.color;
+  let objectQuantity = object.quantity;
+  // recuperation des infos de l'api
+  fetch(`http://localhost:3000/api/products/${objectId}`)
+  .then(response => response.json())
+  .then(data => {
+    const products = data;
+    console.table(products);
+    
+  // affichage des produits du panier
+  // affichage article
+  const productArticle = document.createElement("article");
 
+  document.querySelector("#cart__items").appendChild(productArticle);
+  productArticle.classList.add("cart__item");
+  productArticle.setAttribute("data-id", objectId);
+  productArticle.setAttribute("data.color", objectColor);
+  
+  // div cart item image
+  const divImg = document.createElement("div");
 
+  productArticle.appendChild(divImg);
+  divImg.classList.add("cart__item__img");
 
-//afficher les produits du panier
-// Lieu d affichage du panier
-const displayBasket = document.querySelector('#cart__items')
+  // affichage image
+  const productImg = document.createElement("img");
 
-let structureBasket = []
+  divImg.appendChild(productImg);
+  productImg.setAttribute("src", products.imageUrl);
+  productImg.setAttribute("alt", products.altTxt);
 
-for (let el = 0; el < produitBasket.length; el ++){
+  // affichage div cart item content 
+  const divCartItemContent = document.createElement("div");
 
-  structureBasket = structureBasket + `
-  <article class="cart__item" date-id="${produitBasket[el].id}" date-color="${produitBasket[el].color}"
-    <div class="cart__item__img">
-      <img src="${}" alt="${}">
-    </div>
-    <div class="cart__item__content">
-     <div class="cart__item__content__description">
-      <h2>${}</h2>
-      <p>${}</p>
-      <p>${}</p>
-     </div>
-     <div class="cart__item__content__setting">
-      <div class="cart__item__content__setting_quanity>
-        <p>Qté :${produitBasket[el].quantity}</p>
-        <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${produitBasket[el].quantity}">
-      </div>
-      <div class="cart__item__content__setting__delete">
-        <p class="deleteItem">Supprimer</p>
-      </div>
-    </div>
-  </div>
-</article>`
+  productArticle.appendChild(divCartItemContent);
+  divCartItemContent.classList.add("cart__item__content");
 
-displayBasket.innerHTML = structureBasket;
-}
+  //affichage div cart item content description
+  const divCartItemContentDescription = document.createElement("div");
+  
+  divCartItemContent.appendChild(divCartItemContentDescription);
+  divCartItemContentDescription.classList.add("cart__item__content__description");
+
+  // affichage des elements description
+  const productH2 = document.createElement("h2");
+  const productPColor = document.createElement("p");
+  const productPPrice = document.createElement("p");
+
+  // affichage h2
+  divCartItemContentDescription.appendChild(productH2);
+  productH2.textContent = products.name;
+  // affichage P pour la couleur
+  divCartItemContentDescription.appendChild(productPColor);
+  productPColor.textContent = objectColor;
+  // affichage du p pour le prix
+  divCartItemContentDescription.appendChild(productPPrice);
+  productPPrice.textContent = products.price + " €";
+
+  // affichage div cart item content setting
+  const divCartItemContentSetting = document.createElement("div");
+
+  productArticle.appendChild(divCartItemContentSetting);
+  divCartItemContentSetting.classList.add("cart__item__Content__setting");
+
+  // affichage div cart item content setting quantity
+  const divItemContentSettingQuantity = document.createElement("div");
+
+  divCartItemContentSetting.appendChild(divItemContentSettingQuantity);
+  divItemContentSettingQuantity.classList.add("cart__item__content__setting__quantity");
+
+  // affichage element div cart item setting quantity
+  const productPQuantity = document.createElement("p");
+  const productInput = document.createElement("input");
+
+  divItemContentSettingQuantity.appendChild(productPQuantity);
+  productPQuantity.textContent = "Qté :" + objectQuantity;
+
+  divItemContentSettingQuantity.appendChild(productInput);
+  productInput.classList.add("itemQuantity");
+  productInput.type = "number";
+  productInput.name = "itemQuantity";
+  productInput.min = "1";
+  productInput.max = "100";
+  productInput.value = objectQuantity;
+
+  // affichage div cart item content setting delete
+  const divCartItemContentSettingDelete = document.createElement("div");
+
+  divCartItemContentSetting.appendChild(divCartItemContentSettingDelete);
+  divCartItemContentSettingDelete.classList.add("cart__item__content__settings__delete");
+
+  // affichage element p delete item
+  const productPDelete = document.createElement("p");
+
+  divCartItemContentSettingDelete.appendChild(productPDelete);
+  productPDelete.classList.add("deleteItem");
+  productPDelete.textContent = "Supprimer";
+
+  });
+ };
 
 // supprimer produit du panier
 
@@ -74,85 +117,6 @@ displayBasket.innerHTML = structureBasket;
 
 
 //calcul prix total du panier
-
-/*// affichage des produits du panier
-function displayProduit(Produit) {
-  const cartItem = document.getElementById("cart__Items")
-
-  cartItem = document.querySelector("#cart__items")
-
-  // affichage article
-  const article = document.getElementsByClassName("cart__item")
-  const productArticle = document.createElement("article")
-
-  article.appendChild("productArticle")
-  productArticle.classList.add("cart__item")
-
-  // affichage image
-  const productImgContainer = document.getElementsByClassName("cart__item__img")
-  const productImg = document.createElement("img")
-
-  productImgContainer.appendChild("productImg")
-  productImgContainer.classList.add("cart__item__img")
-
-  productImg.setAttribute("src", produit.imageUrl)
-  productImg.setAttribute("alt", produit.altTxt)
-
-  // affichage description
-  const productItemContainer = document.getElementsByClassName("cart__item__content")
-  const productDescriptionContainer = document.createElement("div")
-  const productH2 = document.createElement("h2")
-  const productPColor = document.createElement("p")
-  const productPPrice = document.createElement("p")
-
-  productItemContainer = document.createElement("div")
-
-  productDescriptionContainer.appendChild("productItemContainer")
-  productDescriptionContainer.classList.add("cart__item__content__description")
-
-  productH2.appendChild("productDescriptionContainer")
-  productH2.textContent = produit.name
-
-  productPColor.appendChild("productDescriptionContainer")
-  productPColor.textContent = produit.color
-
-  productPPrice.appendChild("productDescriptionContainer")
-  productPPrice.textContent = produit.price
-
-  // affichage setting
-
-  const productsettingContainer = document.getElementsByClassName("cart__item__Content__setting")
-  const productQuantity = document.createElement("div")
-  const productPQuantity = document.createElement("p")
-  const productInput = document.createElement("input")
-
-  productsettingContainer = document.createElement("div")
-  productsettingContainer.classList.add("cart__item__Content__setting")
-
-  productQuantity.appendChild("productsettingContainer")
-  productQuantity.classList.add("cart__item__content__setting__quantity")
-
-  productPQuantity.appendChild("productQuantity")
-  productPQuantity.textContent = "Qté :" + produit.quantity
-
-  productInput.appendChild("productQuantity")
-  productInput.classList.add("itemQuantity")
-
-  // affichage delete
-  const productDeleteContainer = document.getElementsByClassName("cart__item__content__settings__delete")
-  const productPDelete = document.createElement("p")
-
-  productDeleteContainer = document.createElement("div")
-  productDeleteContainer.classList.add("cart__item__content__settings__delete")
-
-  productPDelete.appendChild("productDeleteContainer")
-  productPDelete.classList.add("deleteItem")
-  productPDelete.textContent = "Supprimer"
-  
-
-}*/
-
-
 
 //----------------------------------------------------------------Partie formulaire -----------------------------------------------------------------------------------------------
 // validation input du formulaire
