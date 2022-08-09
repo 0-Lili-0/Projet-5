@@ -85,7 +85,7 @@ console.table(basket)
   const productInput = document.createElement("input");
 
   divItemContentSettingQuantity.appendChild(productPQuantity);
-  productPQuantity.textContent = "Qté :" + objectQuantity;
+  productPQuantity.textContent = "Qté :" ;
 
   divItemContentSettingQuantity.appendChild(productInput);
   productInput.classList.add("itemQuantity");
@@ -108,16 +108,33 @@ console.table(basket)
   productPDelete.classList.add("deleteItem");
   productPDelete.textContent = "Supprimer";
 
+  //affichage total quantity
+  totalQuantity();
+  //afficher prix total
+  totalPrice();
   });
  };
+//changer quantités depuis la page panier
+/*function changeQuantity(){
+  
+}*/
 
 // supprimer produit du panier
+/*document.getElementByClassName("deleteItem").addEventListener("click", function removeProduct() {
+  localStorage.removeItem("basket")
+}*/
 
 // calcul quantité total de produit du panier
-
+/*function totalQuantity() {
+  const totalQuantity = document.querySelectorAll("#totalQuantity");
+  totalQuantity.textContent = 
+  }*/
 
 //calcul prix total du panier
-
+/*function totalPrice() {
+const totalPrice = document.querySelectorAll("#totalPrice")
+totalPrice.textContent = productPPrice*productPQuantity
+}*/
 //----------------------------------------------------------------Partie formulaire -----------------------------------------------------------------------------------------------
 // validation input du formulaire
 /*function validateForm(event)  {
