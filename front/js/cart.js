@@ -109,15 +109,28 @@ console.table(basket)
   productPDelete.textContent = "Supprimer";
 
   //affichage total quantity
-  totalQuantity();
+  let totalQuantityProducts = 0;
+  const totalQuantity = document.querySelector("#totalQuantity");
+  for ( let object of basket) {
+    const totalProductQuantity = object.quantity
+    totalQuantityProducts = Number(totalQuantityProducts) + Number(totalProductQuantity)
+    totalQuantity.textContent = totalQuantityProducts;
+  };
+  console.log(totalQuantityProducts);
+
   //afficher prix total
-  totalPrice();
+  let total = 0;
+  const totalPrice = document.querySelector("#totalPrice");
+  for (let object of basket) {
+      const totalPriceUnit = products.price * Number(object.quantity)
+      total = total + totalPriceUnit
+      totalPrice.textContent = total
+    };
+  console.log(total);
   });
  };
 //changer quantités depuis la page panier
-/*function changeQuantity(){
-  
-}*/
+
 
 // supprimer produit du panier
 /*document.getElementByClassName("deleteItem").addEventListener("click", function removeProduct() {
@@ -130,11 +143,7 @@ console.table(basket)
   totalQuantity.textContent = 
   }*/
 
-//calcul prix total du panier
-/*function totalPrice() {
-const totalPrice = document.querySelectorAll("#totalPrice")
-totalPrice.textContent = productPPrice*productPQuantity
-}*/
+
 //----------------------------------------------------------------Partie formulaire -----------------------------------------------------------------------------------------------
 // validation input du formulaire
 /*function validateForm(event)  {
