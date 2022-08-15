@@ -5,8 +5,9 @@
 
 // recupérer les données du local storage
 let basket = JSON.parse(localStorage.getItem("basket"))
-console.table(basket)
-total = []
+console.log(basket)
+// creation d'un tableau pour stocker les prix total de chaque article du panier pour la partie prix total Panier
+total = [] 
  // recuperer les infos des produit present dans le panier depuis l'api
  for( let object of basket) {
     let objectId = object.id;
@@ -95,6 +96,7 @@ total = []
     productInput.min = "1";
     productInput.max = "100";
     productInput.value = objectQuantity;
+    
   
 
   // affichage div cart item content setting delete
@@ -113,44 +115,68 @@ total = []
   //affichage total quantity
     let totalQuantityProducts = 0;
     const totalQuantity = document.querySelector("#totalQuantity");
+    // pour tout les objet du panier
     for ( let object of basket) {
       const totalProductQuantity = object.quantity
+      // on additionne toute les quantité d'article
       totalQuantityProducts = totalQuantityProducts + Number(totalProductQuantity)
-  };
-  totalQuantity.textContent = totalQuantityProducts;
-  console.log(totalQuantityProducts);
+    };
+    totalQuantity.textContent = totalQuantityProducts;
+    //console.log(totalQuantityProducts);
 
   //afficher prix total
-  const totalPriceUnit= document.querySelector("#totalPrice")
-    //total= total + Number(objectQuantity)*productArticle.price
-    total.push(Number(objectQuantity)*products.price)
-   let resultat = 0
-   for (let i of total) {
-      resultat = resultat + i 
-   }
-    totalPriceUnit.textContent = resultat
-    console.log(total)
+    let resultat = 0 // variable pour stocké le resultat
+    const totalPriceUnit = document.querySelector("#totalPrice") // la où apparaitra le total sur la page html
+    // on envoie dans le tableau total les prix total de chaque article 
+    total.push(Number(objectQuantity)*products.price) 
+    // pour chaque ligne du tableau total
+    for (let i of total) {
+      resultat = resultat + i // on fait la somme de tout le tableau
+    }
+    totalPriceUnit.textContent = resultat //on renvoie le total du panier dans le html
+    //console.log(total)
 
   //changer quantités depuis la page panier
-
-    productInput.addEventListener("change", ()=> {
-      console.log(objectId)
-      const productToUpdate = basket.find(item => item.id === objectId)
-      console.log(productToUpdate)
-      basket.push(productToUpdate)
-      console.log(basket)
-    })
- 
+    const currentQuantity = document.querySelectorAll(".itemQuantity");  
     
-
-
- 
+    for (let x of currentQuantity) { 
+      console.log(x)
+      //evenement pour modifier la valeur de l'input
+      currentQuantity[x].addEventListener("change", (e)=> {
+        console.log(currentQuantity[x])
+        // on recupere la quantité dans le local storage
+        let quantityToLocalStorage = basket[x].quantity;
+        console.log("la quantité dans le LS est " + quantityToLocalStorage);
+        // on recupere la quantité modifier dans le panier
+        let quantyModifValue = currentQuantity[x].valueAsNumber;
+        console.log("La quantité modifier depuis le panier est " + quantyModifValue);
+        // on recherche dans le local storage si la quantité est différente de celle du dom
+        const resultFind = basket.find((el)=> el.quantyModifValue != quantityToLocalStorage);
+        resultFind.quantity = quantyModifValue;
+        // on enregistre la nouvelle valeur dans le local storage
+        localStorage.setItem("basket", JSON.stringify(basket))
+        console.log("Le nouveau panier est " + JSON.parse(localStorage.getItem("basket")))
+      }) 
+    }
+  
 // supprimer produit du panier
-
-
-
-
-
+    const deleteProduct = document.getElementsByClassName("deleteItem");
+  
+   /* for (let y = 0; y < deleteProduct.length; y++) {
+      deleteProduct[y].addEventListener("click", (f)=> {
+        let idProductInLocalStorage = basket[y].id;
+        console.log("l id dans le LS est : "+ idProductInLocalStorage);
+        let idProductToDelete = objectId;
+        console.log("l id du produit à supprimer est :"+ idProductToDelete);
+        let idToDeleteFind = basket.find((obj)=> obj.idProductToDelete === idProductInLocalStorage);
+        idToDeleteFind = idProductToDelete;
+        localStorage.removeItem("basket")
+        console.log(basket)
+      })
+    } */
+    
+  
+ 
   });
  };
 
@@ -228,11 +254,10 @@ const contact = {
   city : city.value,
   email : email.value
 };
-console.log(contact);
+//console.log(contact);
 
 // creation tableau produits
 const produits = basket.map(produits => produits.id )
-console.log(produits);
 
 //envoie des données dans une requête post
 function validateForm() {

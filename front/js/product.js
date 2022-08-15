@@ -121,8 +121,8 @@ btn.addEventListener("click", (e) => {
                 IndiceTest = 2;
             }
         }
-        //on ousse et sauve les donées dans le localStorage
-        if(IndiceTest===2) {
+        //on pousse et sauve les donées dans le localStorage
+        if(IndiceTest === 2) {
             retrieveArray.push(data)
             localStorage.setItem("basket", JSON.stringify(retrieveArray))
         }
