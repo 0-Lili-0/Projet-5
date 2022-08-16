@@ -96,6 +96,8 @@ total = []
     productInput.min = "1";
     productInput.max = "100";
     productInput.value = objectQuantity;
+    productInput.id = objectId+objectColor;
+
     
   
 
@@ -111,6 +113,8 @@ total = []
     divCartItemContentSettingDelete.appendChild(productPDelete);
     productPDelete.classList.add("deleteItem");
     productPDelete.textContent = "Supprimer";
+    productPDelete.id = "delete"+objectId+objectColor;
+
 
   //affichage total quantity
     let totalQuantityProducts = 0;
@@ -137,33 +141,31 @@ total = []
     //console.log(total)
 
   //changer quantités depuis la page panier
-    const currentQuantity = document.querySelectorAll(".itemQuantity");  
     
-    for (let x of currentQuantity) { 
-      console.log(x)
-      //evenement pour modifier la valeur de l'input
-      currentQuantity[x].addEventListener("change", (e)=> {
-        console.log(currentQuantity[x])
-        // on recupere la quantité dans le local storage
-        let quantityToLocalStorage = basket[x].quantity;
-        console.log("la quantité dans le LS est " + quantityToLocalStorage);
-        // on recupere la quantité modifier dans le panier
-        let quantyModifValue = currentQuantity[x].valueAsNumber;
-        console.log("La quantité modifier depuis le panier est " + quantyModifValue);
-        // on recherche dans le local storage si la quantité est différente de celle du dom
-        const resultFind = basket.find((el)=> el.quantyModifValue != quantityToLocalStorage);
-        resultFind.quantity = quantyModifValue;
-        // on enregistre la nouvelle valeur dans le local storage
-        localStorage.setItem("basket", JSON.stringify(basket))
-        console.log("Le nouveau panier est " + JSON.parse(localStorage.getItem("basket")))
-      }) 
-    }
-  
+    const currentQuantity = document.getElementById(objectId+objectColor)
+    //evenement pour modifier la valeur de l'input
+    currentQuantity.addEventListener("change", (e)=> {
+    // on recupere la quantité modifier dans le panier
+      let quantyModifValue = currentQuantity.valueAsNumber;
+      console.log("La quantité modifier depuis le panier est " + quantyModifValue);
+      // on recherche dans le local storage si la quantité est différente de celle du dom
+      const resultFind = basket.find((el)=> el.id === objectId && el.color === objectColor);
+      console.log("contenue :" +resultFind['id'] +resultFind['color'] );
+      resultFind.quantity = quantyModifValue;
+      // on enregistre la nouvelle valeur dans le local storage
+      localStorage.setItem("basket", JSON.stringify(basket))
+      console.log("Le nouveau panier est " + JSON.parse(localStorage.getItem("basket")))
+    }) 
+   
+
 // supprimer produit du panier
-    const deleteProduct = document.getElementsByClassName("deleteItem");
-  
-   /* for (let y = 0; y < deleteProduct.length; y++) {
-      deleteProduct[y].addEventListener("click", (f)=> {
+    const deleteProduct = document.getElementById("delete"+objectId+objectColor);
+    deleteProduct.addEventListener("click", (f)=> {
+      const idToDeleteFind = basket.findIndex((elDel)=> elDel.id === objectId && elDel.color === objectColor);
+      console.log(idToDeleteFind)
+      localStorage.removeItem("objectId")
+      
+     /* deleteProduct.addEventListener("click", (f)=> {
         let idProductInLocalStorage = basket[y].id;
         console.log("l id dans le LS est : "+ idProductInLocalStorage);
         let idProductToDelete = objectId;
@@ -171,14 +173,15 @@ total = []
         let idToDeleteFind = basket.find((obj)=> obj.idProductToDelete === idProductInLocalStorage);
         idToDeleteFind = idProductToDelete;
         localStorage.removeItem("basket")
-        console.log(basket)
+        console.log(basket)*/
+
       })
-    } */
+     
     
   
  
   });
- };
+}
 
 
 
@@ -200,64 +203,62 @@ const errorAdresse = document.getElementById("adressErrorMsg")
 const ville = document.getElementById("city");
 const errorVille = document.getElementById("cityErrorMsg")
 const email = document.getElementById("email");
-const errorMail = document.getElementById("mailErrorMsg")
+const errorMail = document.getElementById("emailErrorMsg")
 
 // verifier si champs sont rempli correctement et/ou non vide
-const regexPrenom = /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/
+const regexPrenom = /^^([a-z]+(( |')[a-z]+)*)+([-]([a-z]+(( |')[a-z]+)*)+)*$#iu/
 const regexNom = /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/
 const regexAdresse = /^[a-zA-Z0-9\s,'-]*$/
 const regexVille = /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/
 const regexMail =  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
 // validation du formulaire
-function formCheck() {
+//function formCheck() {
   // verif prenom
   if (firstName.value == "" && regexPrenom.test(firstName.Value) == false ) {
     errorPrenom.textContent = "Veuillez indiquer votre prénom au bon foramt SVP";
     errorPrenom.style.color = "red";
-    return false;
   }
   //verif nom
   if (lastName.value == "" && regexNom.test(lastName.Value) == false ) {
     errorNom.textContent = "Veuillez indiquer votre nom au bon foramt SVP";
     errorNom.style.color = "red";
-    return false;
+    
   }
   //verif adresse
-  if (adress.value == "" && regexAdresse.test(adress.Value) == false ) {
+  if (address.value == "" && regexAdresse.test(address.Value) == false ) {
   errorAdresse.textContent = "Veuillez indiquer votre adresse au bon foramt SVP";
   errorAdresse.style.color = "red";
-  return false;
+  
   }
   //verif ville
   if (city.value == "" && regexVille.test(city.Value) == false ) {
   errorVille.textContent = "Veuillez indiquer votre ville au bon foramt SVP";
   errorVille.style.color = "red";
-  return false;
+  
   }
   //verif email
   if (email.value == "" && regexMail.test(email.Value) == false ) {
   errorMail.textContent = "Veuillez indiquer votre adresse email au bon foramt SVP";
   errorMail.style.color = "red";
-  return false;
-  } else {
-    return true
-  }
-}
+  
+  } 
+   
+//}
 
 //recupérer les données du formaulaire :
 // creation objet contact
 const contact = {
   prenom : firstName.value,
   nom : lastName.value,
-  adresse : adresse.value,
+  adresse : address.value,
   city : city.value,
   email : email.value
 };
-//console.log(contact);
+console.log(contact);
 
 // creation tableau produits
-const produits = basket.map(produits => produits.id )
+const produits = basket.map(produits => produits.id)
 
 //envoie des données dans une requête post
 function validateForm() {
