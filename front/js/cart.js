@@ -160,10 +160,12 @@ total = []
 
 // supprimer produit du panier
     const deleteProduct = document.getElementById("delete"+objectId+objectColor);
+    
+    
     deleteProduct.addEventListener("click", (f)=> {
       const idToDeleteFind = basket.findIndex((elDel)=> elDel.id === objectId && elDel.color === objectColor);
       console.log(idToDeleteFind)
-      localStorage.removeItem("objectId")
+      localStorage.removeItem(basket)
       
      /* deleteProduct.addEventListener("click", (f)=> {
         let idProductInLocalStorage = basket[y].id;
@@ -192,94 +194,156 @@ total = []
 // 2 recuperer et analyser les donées saisie dans le formulaire
 // 3 constituer un objet contact et un tableau de produits
 
+const form = document.getElementsByClassName("cart__order__form")
+const btnOrder = document.getElementById("order");
 
-const formValid = document.getElementById("order");
-const prenom = document.getElementById("firstName");
-const errorPrenom = document.getElementById("firstNameErrorMsg");
-const nom = document.getElementById("lastName");
-const errorNom = document.getElementById("lastNameErrorMsg")
-const adresse = document.getElementById("address");
-const errorAdresse = document.getElementById("adressErrorMsg")
-const ville = document.getElementById("city");
-const errorVille = document.getElementById("cityErrorMsg")
-const email = document.getElementById("email");
-const errorMail = document.getElementById("emailErrorMsg")
+// validation prenom
+function validFirstName() {
+  const prenom = document.getElementById("firstName").value
+  const errorFirstName = document.getElementById("firstNameErrorMsg")
+  let regexFirstName = /^[a-zA-z ,.'-]+$/ // a-zA-Z n'importe quelle caractere entre a et z en minuscule ou majuscule |.'- un seul caractère de la liste |+ nombre de fois illimité
 
-// verifier si champs sont rempli correctement et/ou non vide
-const regexPrenom = /^^([a-z]+(( |')[a-z]+)*)+([-]([a-z]+(( |')[a-z]+)*)+)*$#iu/
-const regexNom = /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/
-const regexAdresse = /^[a-zA-Z0-9\s,'-]*$/
-const regexVille = /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/
-const regexMail =  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  if( regexFirstName.test(prenom) === false) {
+    errorFirstName.textContent = "Veuillez indiquer votre prénom au bon format SVP";
+    errorFirstName.style.color = "red";
+  } else {
+    errorFirstName.textContent = "Votre prénom est au bon format";
+    errorFirstName.style.color = "green";
+    return true
+  }
+}
+
+// validation nom 
+function validName() {
+  const nom = document.getElementById("lastName").value
+  const errorLastName = document.getElementById("lastNameErrorMsg")
+  let regexLastName = /^[a-zA-Z ,.'-]+$/ // a-zA-Z n'importe quelle caractere entre a et z en minuscule ou majuscule |.'- un seul caractère de la liste |+ nombre de fois illimité
+
+  if( regexLastName.test(nom) === false) {
+    errorLastName.textContent = "Veuillez indiquer votre nom au bon format SVP";
+    errorLastName.style.color = "red";
+  } else {
+    errorLastName.textContent = "Votre nom est au bon format";
+    errorLastName.style.color = "green";
+    return true
+  }
+}
+
+// validation adresse
+function validAddress() {
+  const adresse = document.getElementById("address").value
+  const errorAdress = document.getElementById("addressErrorMsg")
+  let regexAddress = /^\s*\S+(?:\s+\S+){2}/
+
+  if( regexAddress.test(adresse) === false) {
+    errorAdress.textContent = "Veuillez indiquer votre adresse au bon format '26 rue esemple' SVP";
+    errorAdress.style.color = "red";
+  } else {
+    errorAdress.textContent = "Votre adresse est au bon format";
+    errorAdress.style.color = "green";
+    return true
+  }
+}
+
+// validation ville
+function validCity() {
+  const ville = document.getElementById("city").value
+  const errorCity = document.getElementById("cityErrorMsg")
+  let regexCity = /^([0-9]{5}) ?([a-zA-Z]*)$/
+
+  if( regexCity.test(ville) === false) {
+    errorCity.textContent = `Veuillez indiquer votre ville au bon format "codePostal et ville" SVP`;
+    errorCity.style.color = "red";
+  } else {
+    errorCity.textContent = "Votre ville est au bon format";
+    errorCity.style.color = "green";
+    return true
+  }
+}
+
+// validation email
+function validEmail() {
+  const email = document.getElementById("email").value
+  const errorMail = document.getElementById("emailErrorMsg")
+  let regexEmail = /^[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+$/
+
+  if( regexEmail.test(email) === false) {
+    errorMail.textContent = "Veuillez indiquer votre email au bon format 'exemple@test.com' SVP";
+    errorMail.style.color = "red";
+  } else {
+    errorMail.textContent = "Votre email est correcte";
+    errorMail.style.color = "green";
+    return true
+  }
+}
 
 // validation du formulaire
-//function formCheck() {
-  // verif prenom
-  if (firstName.value == "" && regexPrenom.test(firstName.Value) == false ) {
-    errorPrenom.textContent = "Veuillez indiquer votre prénom au bon foramt SVP";
-    errorPrenom.style.color = "red";
-  }
-  //verif nom
-  if (lastName.value == "" && regexNom.test(lastName.Value) == false ) {
-    errorNom.textContent = "Veuillez indiquer votre nom au bon foramt SVP";
-    errorNom.style.color = "red";
-    
-  }
-  //verif adresse
-  if (address.value == "" && regexAdresse.test(address.Value) == false ) {
-  errorAdresse.textContent = "Veuillez indiquer votre adresse au bon foramt SVP";
-  errorAdresse.style.color = "red";
-  
-  }
-  //verif ville
-  if (city.value == "" && regexVille.test(city.Value) == false ) {
-  errorVille.textContent = "Veuillez indiquer votre ville au bon foramt SVP";
-  errorVille.style.color = "red";
-  
-  }
-  //verif email
-  if (email.value == "" && regexMail.test(email.Value) == false ) {
-  errorMail.textContent = "Veuillez indiquer votre adresse email au bon foramt SVP";
-  errorMail.style.color = "red";
-  
-  } 
-   
-//}
 
 //recupérer les données du formaulaire :
 // creation objet contact
+const prenom = document.getElementById("firstName");
+const nom = document.getElementById("lastName");
+const adresse = document.getElementById("address");
+const ville = document.getElementById("city");
+const email = document.getElementById("email");
+
 const contact = {
-  prenom : firstName.value,
-  nom : lastName.value,
-  adresse : address.value,
-  city : city.value,
-  email : email.value
+  Prenom : prenom.value,
+  Nom : nom.value,
+  Adresse : adresse.value,
+  Ville : ville.value,
+  Email : email.value
 };
-console.log(contact);
+console.log("Le prenom est " + prenom);
 
 // creation tableau produits
 const produits = basket.map(produits => produits.id)
-
+console.log(produits)
 //envoie des données dans une requête post
-function validateForm() {
-  if (formCheck() === true) {
-    formValid.addEventListener("click", (e)=> {
-      e.preventDefault();
-      fetch(`http://localhost:3000/api/products/order`, {
-        method: "POST",
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json",
-        },
-        body : JSON.stringify({
-          contact,
-          products
-        })
-      })
-      .then(response => response.json())
-      .then(data => console.log(data));
-    });
-  } else {
-    alert("Le formulaire est non valide, merci de vérifier les informations.")
+btnOrder.addEventListener("click", (e)=> {
+  e.preventDefault()
+  if (validFirstName() === false) {
+    return
   }
-}
+  if (validName() === false) {
+    return
+  }
+  if (validAddress() === false) {
+    return
+  }
+  if (validCity() === false) {
+    return
+  }
+  if (validEmail() === false) {
+    return
+  } else {
+    // envoie requete post
+    fetch(`http://localhost:3000/api/products/order`,{
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      body : JSON.stringify({
+        contact,
+        produits
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log("Le formulaire est bien envoyé");
+      // obtenir le numero de commande depuis l'api
+      let orderId = data.orderId;
+      console.log(orderId);
+      //si envoie ok recupérer numero commande et envoie sur la page confirmation en effacant le localStorage
+      if (orderId) {
+        localStorage.clear()
+        document.location.href = `confirmation.html?commande=${value.orderId}`
+      // sinon message d'alerte  
+      } else {
+        alert("Une erreur c'est produite, merci de réessayer")
+      }
+    })
+      
+  };
+})
