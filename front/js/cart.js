@@ -18,8 +18,8 @@ total = []
     fetch(`http://localhost:3000/api/products/${objectId}`)
     .then(response => response.json())
     .then(data => {
-      const products = data;
-      console.log(products);
+      const productsInBasket = data;
+      console.log(productsInBasket);
     
   // affichage des produits du panier
   // affichage article
@@ -40,8 +40,8 @@ total = []
     const productImg = document.createElement("img");
 
     divImg.appendChild(productImg);
-    productImg.setAttribute("src", products.imageUrl);
-    productImg.setAttribute("alt", products.altTxt);
+    productImg.setAttribute("src", productsInBasket.imageUrl);
+    productImg.setAttribute("alt", productsInBasket.altTxt);
 
   // affichage div cart item content 
     const divCartItemContent = document.createElement("div");
@@ -62,13 +62,13 @@ total = []
 
   // affichage h2
     divCartItemContentDescription.appendChild(productH2);
-    productH2.textContent = products.name;
+    productH2.textContent = productsInBasket.name;
   // affichage P pour la couleur
     divCartItemContentDescription.appendChild(productPColor);
     productPColor.textContent = objectColor;
   // affichage du p pour le prix
     divCartItemContentDescription.appendChild(productPPrice);
-    productPPrice.textContent = products.price + " €";
+    productPPrice.textContent = productsInBasket.price + " €";
 
   // affichage div cart item content setting
     const divCartItemContentSetting = document.createElement("div");
@@ -132,7 +132,7 @@ total = []
     let resultat = 0 // variable pour stocké le resultat
     const totalPriceUnit = document.querySelector("#totalPrice") // la où apparaitra le total sur la page html
     // on envoie dans le tableau total les prix total de chaque article 
-    total.push(Number(objectQuantity)*products.price) 
+    total.push(Number(objectQuantity) * productsInBasket.price) 
     // pour chaque ligne du tableau total
     for (let i of total) {
       resultat = resultat + i // on fait la somme de tout le tableau
@@ -160,28 +160,25 @@ total = []
 
 // supprimer produit du panier
     const deleteProduct = document.getElementById("delete"+objectId+objectColor);
-    
-    
-    deleteProduct.addEventListener("click", (f)=> {
-      const idToDeleteFind = basket.findIndex((elDel)=> elDel.id === objectId && elDel.color === objectColor);
-      console.log(idToDeleteFind)
-      localStorage.removeItem(basket)
-      
-     /* deleteProduct.addEventListener("click", (f)=> {
-        let idProductInLocalStorage = basket[y].id;
-        console.log("l id dans le LS est : "+ idProductInLocalStorage);
-        let idProductToDelete = objectId;
-        console.log("l id du produit à supprimer est :"+ idProductToDelete);
-        let idToDeleteFind = basket.find((obj)=> obj.idProductToDelete === idProductInLocalStorage);
-        idToDeleteFind = idProductToDelete;
-        localStorage.removeItem("basket")
-        console.log(basket)*/
-
-      })
-     
-    
   
- 
+   deleteProduct.addEventListener("click", (f)=> {
+      let totalProductToRemove = basket.length
+      console.log("il y a :" + totalProductToRemove)
+      //si il n'y a qu'un produit on vide le local storage
+      if ( totalProductToRemove == 1) {
+        localStorage.removeItem("basket")
+        // rafraichir la page automatiquement
+        window.location.reload();
+      } else {
+        //si il y a plus de 1 produit on filtre avec l id et la couleur et on sauvegarde le nouveau local storage
+        const idToDeleteFind = basket.filter(p => p.id !== objectId && p.color !== objectColor);
+        console.log("voici" + ['id'])
+        localStorage.setItem("basket", JSON.stringify(idToDeleteFind))
+        // rafraichir la page automatiquement
+        window.location.reload();
+      }
+    })  
+
   });
 }
 
@@ -204,7 +201,7 @@ function validFirstName() {
   let regexFirstName = /^[a-zA-z ,.'-]+$/ // a-zA-Z n'importe quelle caractere entre a et z en minuscule ou majuscule |.'- un seul caractère de la liste |+ nombre de fois illimité
 
   if( regexFirstName.test(prenom) === false) {
-    errorFirstName.textContent = "Veuillez indiquer votre prénom au bon format SVP";
+    errorFirstName.textContent = "Veuillez indiquer votre prénom avec une chaîne de caractère SVP";
     errorFirstName.style.color = "red";
   } else {
     errorFirstName.textContent = "Votre prénom est au bon format";
@@ -220,7 +217,7 @@ function validName() {
   let regexLastName = /^[a-zA-Z ,.'-]+$/ // a-zA-Z n'importe quelle caractere entre a et z en minuscule ou majuscule |.'- un seul caractère de la liste |+ nombre de fois illimité
 
   if( regexLastName.test(nom) === false) {
-    errorLastName.textContent = "Veuillez indiquer votre nom au bon format SVP";
+    errorLastName.textContent = "Veuillez indiquer votre nom avec une chaîne de caractère SVP";
     errorLastName.style.color = "red";
   } else {
     errorLastName.textContent = "Votre nom est au bon format";
@@ -236,7 +233,7 @@ function validAddress() {
   let regexAddress = /^\s*\S+(?:\s+\S+){2}/
 
   if( regexAddress.test(adresse) === false) {
-    errorAdress.textContent = "Veuillez indiquer votre adresse au bon format '26 rue esemple' SVP";
+    errorAdress.textContent = "Veuillez indiquer votre adresse au bon format '26 rue exemple' SVP";
     errorAdress.style.color = "red";
   } else {
     errorAdress.textContent = "Votre adresse est au bon format";
@@ -276,32 +273,7 @@ function validEmail() {
     return true
   }
 }
-
-// validation du formulaire
-
-//recupérer les données du formaulaire :
-// creation objet contact
-const prenom = document.getElementById("firstName");
-const nom = document.getElementById("lastName");
-const adresse = document.getElementById("address");
-const ville = document.getElementById("city");
-const email = document.getElementById("email");
-
-const contact = {
-  Prenom : prenom.value,
-  Nom : nom.value,
-  Adresse : adresse.value,
-  Ville : ville.value,
-  Email : email.value
-};
-console.log("Le prenom est " + prenom);
-
-// creation tableau produits
-const produits = basket.map(produits => produits.id)
-console.log(produits)
-//envoie des données dans une requête post
-btnOrder.addEventListener("click", (e)=> {
-  e.preventDefault()
+function checkForm() {
   if (validFirstName() === false) {
     return
   }
@@ -315,35 +287,78 @@ btnOrder.addEventListener("click", (e)=> {
     return
   }
   if (validEmail() === false) {
-    return
+    return false
   } else {
-    // envoie requete post
-    fetch(`http://localhost:3000/api/products/order`,{
-      method: "POST",
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
-      },
-      body : JSON.stringify({
-        contact,
-        produits
+    return true
+  }
+}
+// validation du formulaire
+
+//recupérer les données du formaulaire :
+
+
+
+
+//envoie des données dans une requête post
+btnOrder.addEventListener("click", (e)=> {
+  // creation objet contact
+  const contact = {
+  firstName : document.getElementById("firstName").value,
+  lastName : document.getElementById("lastName").value,
+  address : document.getElementById("address").value,
+  city : document.getElementById("city").value,
+  email : document.getElementById("email").value
+};
+console.log(contact);
+
+// creation tableau produits
+const products = basket.map(produits => produits.id)
+console.log(products)
+
+  try {
+    e.preventDefault()
+    if (checkForm() === true) {
+      // envoie requete post
+      fetch(`http://localhost:3000/api/products/order`,{
+        method: "POST",
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+        },
+        body : JSON.stringify({
+          contact,
+          products
+        })
       })
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log("Le formulaire est bien envoyé");
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
       // obtenir le numero de commande depuis l'api
-      let orderId = data.orderId;
-      console.log(orderId);
-      //si envoie ok recupérer numero commande et envoie sur la page confirmation en effacant le localStorage
-      if (orderId) {
+        let orderId = data.orderId;
+        console.log(orderId);
+        //si envoie ok recupérer numero commande et envoie sur la page confirmation en effacant le localStorage
+        if (orderId) {
         localStorage.clear()
-        document.location.href = `confirmation.html?commande=${value.orderId}`
-      // sinon message d'alerte  
-      } else {
-        alert("Une erreur c'est produite, merci de réessayer")
-      }
-    })
-      
-  };
+        window.location.href = `confirmation.html?commande=${data.orderId}`
+    } else {
+      // sinon message d'alerte
+      alert("Une erreur c'est produite, merci de réessayer")
+    }   
+  })
+  
+}
+}
+  catch(error){
+    console.log("erreur")
+  }
 })
+
+ 
+  
+ 
+
+
+
+
+
+
