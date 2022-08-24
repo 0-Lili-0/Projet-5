@@ -11,8 +11,6 @@ fetch(`http://localhost:3000/api/products/${getProductId}`)
         displayData(product)
     });
 
-
-
 // Affichage des infos du produits
 function affichageProduit(element) {
 let image = document.querySelector("item__img")
@@ -20,7 +18,6 @@ let titre = document.querySelector("title")
 let prix = document.querySelector("price")
 let description = document.querySelector("description")
 let options = document.querySelector("colors")
-//for(let element of colors)
 
 }
 
@@ -91,47 +88,50 @@ btn.addEventListener("click", (e) => {
         alert("Veuillez choisir une couleur et indiquer une quantité S.V.P.")
         return // faire arreter la fonction afin de ne pas etre envoyer sur la page panier
     }
-    //localstorage pour garder en mémoire données dans un tableau 
-    let arrayBasket = []
-    // creation de l'objet à stocker dans le local storage
-    let data = {
-        id: id,
-        color: color,
-        quantity: quantity
-    }
+//localstorage pour garder en mémoire données dans un tableau 
+    
+// creation de l'objet à stocker dans le local storage
+let data = {
+       id: id,
+    color: color,
+    quantity: quantity
+}
 //1 recupère tableau actuelle
 //2 check si storageContent null ou pas si null initailiser tableau et ajout tableau dans local storage si non recupère tableau et ajouter element dedans
 
 // tableau panier 
-    let retrieveArray = JSON.parse(localStorage.getItem("basket"))
-    // si le panier est vide
-        if (retrieveArray !== null) {  
-        // variable test
-        let IndiceTest = 0;
-        //pour tout les élement du panier
-        for ( let element of retrieveArray ) {
-            //si id et la couleur existe déjà ont additionne les quantité et on pousse dans le panier
-            if (element.id === data.id && element.color === data.color) {
-                element.quantity = Number(element.quantity) + Number(data.quantity)
-                localStorage.setItem("basket", JSON.stringify(retrieveArray))
-                IndiceTest = 1;
-                break
-            // sinon on test variable    
-            } else {
-                IndiceTest = 2;
-            }
-        }
-        //on pousse et sauve les donées dans le localStorage
-        if(IndiceTest === 2) {
-            retrieveArray.push(data)
-            localStorage.setItem("basket", JSON.stringify(retrieveArray))
-        }
-        // sinon on pousse et enregistre les données dans le panier    
+let retrieveArray = JSON.parse(localStorage.getItem("basket"));
+
+// si le panier est vide
+if (retrieveArray !== null) {  
+    // variable test
+    let IndiceTest = 0;
+    //pour tout les élement du panier
+    for ( let element of retrieveArray ) {
+    //si id et la couleur existe déjà ont additionne les quantité et on pousse dans le panier
+        if (element.id === data.id && element.color === data.color) {
+            element.quantity = Number(element.quantity) + Number(data.quantity);
+            localStorage.setItem("basket", JSON.stringify(retrieveArray));
+            IndiceTest = 1;
+            break
+        // sinon on test variable    
         } else {
-        retrieveArray = []
-        retrieveArray.push(data)
-        localStorage.setItem("basket", JSON.stringify(retrieveArray))
-    }
-    // renvoie vers la page panier
-    window.location.href = "cart.html" 
-})
+            IndiceTest = 2;
+        };
+    };
+    //on pousse et sauve les donées dans le localStorage
+        if(IndiceTest === 2) {
+            retrieveArray.push(data);
+            localStorage.setItem("basket", JSON.stringify(retrieveArray));
+        } else {
+    // sinon on pousse et enregistre les données dans le panier    
+            retrieveArray = [];
+            retrieveArray.push(data);
+            localStorage.setItem("basket", JSON.stringify(retrieveArray));
+        };
+};
+// renvoie vers la page panier
+window.location.href = "cart.html" 
+});
+   
+
