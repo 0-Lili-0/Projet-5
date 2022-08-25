@@ -123,19 +123,12 @@ if (retrieveArray !== null) {
         if(IndiceTest === 2) {
             retrieveArray.push(data);
             localStorage.setItem("basket", JSON.stringify(retrieveArray));
-        }/* else {
-    // sinon on pousse et enregistre les données dans le panier    
-            retrieveArray = [];
-            retrieveArray.push(data);
-            localStorage.setItem("basket", JSON.stringify(retrieveArray));
-        }*/;
+        };
 }
 else{
     retrieveArray = [];
     retrieveArray.push(data);
     localStorage.setItem("basket", JSON.stringify(retrieveArray));
-
-
 };
 // renvoie vers la page panier
 window.location.href = "cart.html" 

@@ -24,7 +24,7 @@ for( let object of basket) {
     displayProduit(apiProductsInBasket, objectId, objectColor, objectQuantity)
     totalQuantityOfBasket()
     totalOfBasket(apiProductsInBasket, objectQuantity)
-    changeQuantityOfBasket(objectId, objectColor)
+   // changeQuantityOfBasket(objectId, objectColor, objectQuantity)
     deleteProductOfBasket(objectId, objectColor)
 
   })
@@ -148,34 +148,32 @@ function totalOfBasket(productsInBasket, fObjectQuantity) {
   totalPriceUnit.textContent = resultat; //on renvoie le total du panier dans le html
 };
 //fonction changer quantités depuis la page panier
-function changeQuantityOfBasket(fObjectId, fObjectColor) {
+/*function changeQuantityOfBasket(fObjectId, fObjectColor, fObjectQuantity) {
   const currentQuantity = document.querySelectorAll(".itemQuantity");
+  
+  currentQuantity.addEventListener("change", (f)=> {
+    let quantyModifValue = currentQuantity.value;
+    console.log("La quantité modifier depuis le panier est " + quantyModifValue);
+    
+  }) 
+  
+};*/
    
-  for (let quantity of currentQuantity) {
-    quantity.addEventListener("change", (d)=> {
-      const idToQuantityChange = basket.filter(p => p.id !== fObjectId && p.color !== fObjectColor);
-      console.log(idToQuantityChange)
-      localStorage.setItem("basket", JSON.stringify(idToQuantityChange));
-      window.location.reload();
-    });
-  };
- 
-};
-   /* const currentQuantity = document.getElementById(objectId+objectColor)
-    //evenement pour modifier la valeur de l'input
-    currentQuantity.addEventListener("change", (e)=> {
+   //evenement pour modifier la valeur de l'input
+    //currentQuantity.addEventListener("change", (e)=> {
     // on recupere la quantité modifier dans le panier
-      let quantyModifValue = currentQuantity.valueAsNumber;
-      console.log("La quantité modifier depuis le panier est " + quantyModifValue);
+     // let quantyModifValue = currentQuantity.valueAsNumber;*/
+     // console.log("La quantité modifier depuis le panier est " + quantyModifValue);
       // on recherche dans le local storage si la quantité est différente de celle du dom
-      const resultFind = basket.find((el)=> el.id === objectId && el.color === objectColor);
-      console.log("contenue :" +resultFind['id'] +resultFind['color'] );
-      resultFind.quantity = quantyModifValue;
+     // const resultFind = basket.find((el)=> el.id === objectId && el.color === objectColor);
+     // console.log("contenue :" +resultFind['id'] +resultFind['color'] );
+     // resultFind.quantity = quantyModifValue;
       // on enregistre la nouvelle valeur dans le local storage
-      localStorage.setItem("basket", JSON.stringify(basket))
-      window.location.reload();
-      console.log("Le nouveau panier est " + JSON.parse(localStorage.getItem("basket")))
-    }) */
+     // localStorage.setItem("basket", JSON.stringify(basket))
+     // window.location.reload();
+      //console.log("Le nouveau panier est " + JSON.parse(localStorage.getItem("basket")))
+   // })
+   
    
 
 // fonction supprimer 1 produit du panier
@@ -184,14 +182,27 @@ function deleteProductOfBasket(fObjectId, fObjectColor) {
   for (let item of deleteProduct) {
     item.addEventListener("click", (e)=> {
       e.preventDefault();
-      /*const idToDeleteFind = basket.filter(p => p.id !== fObjectId && p.color !== fObjectColor);
-      localStorage.setItem("basket", JSON.stringify(idToDeleteFind));*/
-      /*const IdItemDelete = deleteProduct.closest(data-id);
-      const ColorItemDelete = deleteProduct.closest(data.color);
-      alert(IdItemDelete);
-      alert(ColorItemDelete);*/
+      // on remonte jsuqu'au parent
+     // let Item2Delete = item.closest(".cart__item");
+      //on cherche l'id et la couleur du produit cible
+     // let DataIdToDelete = Item2Delete.getAttribute("data-id");
+     // let DataColorToDelete = Item2Delete.getAttribute("data.color");
+      
+        const idToDeleteFind = basket.filter(p => p.id !== fObjectId && p.color !== fObjectColor)
+        console.log(idToDeleteFind)
+        localStorage.setItem("basket", JSON.stringify(idToDeleteFind));
+      
+      //on cherche l'id et la couleur dans le panier
+      //const idToDeleteFind = basket.filter(p => p.id !== fObjectId && p.color !== fObjectColor);
+      /*if ( DataIdToDelete & DataColorToDelete === idToDeleteFind) {
+
+      } else {
+        
+      }*/
+     //localStorage.setItem("basket", JSON.stringify(idToDeleteFind));
+      //alert("on supprime "+ DataidToDelete + DataColorToDelete)
       // rafraichir la page automatiquement
-      window.location.reload();
+      //window.location.reload();
     });
   };
   
