@@ -114,7 +114,7 @@ if (retrieveArray !== null) {
             localStorage.setItem("basket", JSON.stringify(retrieveArray));
             IndiceTest = 1;
             break
-        // sinon on test variable    
+        // sinon on change variable    
         } else {
             IndiceTest = 2;
         };
@@ -123,12 +123,19 @@ if (retrieveArray !== null) {
         if(IndiceTest === 2) {
             retrieveArray.push(data);
             localStorage.setItem("basket", JSON.stringify(retrieveArray));
-        } else {
+        }/* else {
     // sinon on pousse et enregistre les données dans le panier    
             retrieveArray = [];
             retrieveArray.push(data);
             localStorage.setItem("basket", JSON.stringify(retrieveArray));
-        };
+        }*/;
+}
+else{
+    retrieveArray = [];
+    retrieveArray.push(data);
+    localStorage.setItem("basket", JSON.stringify(retrieveArray));
+
+
 };
 // renvoie vers la page panier
 window.location.href = "cart.html" 

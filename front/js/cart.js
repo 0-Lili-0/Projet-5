@@ -181,12 +181,15 @@ function changeQuantityOfBasket(fObjectId, fObjectColor) {
 // fonction supprimer 1 produit du panier
 function deleteProductOfBasket(fObjectId, fObjectColor) {
   const deleteProduct = document.querySelectorAll(".deleteItem");
-  
   for (let item of deleteProduct) {
     item.addEventListener("click", (e)=> {
       e.preventDefault();
-      const idToDeleteFind = basket.filter(p => p.id !== fObjectId && p.color !== fObjectColor);
-      localStorage.setItem("basket", JSON.stringify(idToDeleteFind));
+      /*const idToDeleteFind = basket.filter(p => p.id !== fObjectId && p.color !== fObjectColor);
+      localStorage.setItem("basket", JSON.stringify(idToDeleteFind));*/
+      /*const IdItemDelete = deleteProduct.closest(data-id);
+      const ColorItemDelete = deleteProduct.closest(data.color);
+      alert(IdItemDelete);
+      alert(ColorItemDelete);*/
       // rafraichir la page automatiquement
       window.location.reload();
     });
@@ -383,7 +386,7 @@ const products = basket.map(produits => produits.id)
       
         //si envoie ok recupérer numero commande et envoie sur la page confirmation en effacant le localStorage
         if (orderId) {
-        localStorage.clear()
+        //localStorage.clear()
         window.location.href = `confirmation.html?commande=${data.orderId}`
     } else {
       // sinon message d'alerte
