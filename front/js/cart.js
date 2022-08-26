@@ -3,8 +3,8 @@
 //2 parcourir le tableau
 //3 creer et inseré les elements dans la page
 
-// recupérer les données du local storage
-let basket = JSON.parse(localStorage.getItem("basket"))
+// recupérer les données du local storage et les trier par ID avec la fonction sort(compare)
+let basket = JSON.parse(localStorage.getItem("basket")).sort(compare)
 console.log(basket)
 
 // creation d'un tableau pour stocker les prix total de chaque article du panier pour la partie prix total Panier
@@ -26,11 +26,23 @@ for( let object of basket) {
     totalOfBasket(apiProductsInBasket, objectQuantity)
     changeQuantityOfBasket(objectId, objectColor, objectQuantity)
     deleteProductOfBasket()
+    basket.sort(compare)
   })
 
 }
+// tri des articles en fonction de l'id
+function compare(a, b) {
+  const idA = a.id.toUpperCase();
+  const idB = b.id.toUpperCase();
 
-
+  let comparison = 0
+  if (idA > idB) {
+    comparison = 1;
+  } else if ( idA < idB) {
+    comparison = -1;
+  }
+  return comparison
+}
 
   // affichage des produits du panier
 function displayProduit(productsInBasket,fObjectId, fObjectColor, fObjectQuantity) {
@@ -122,8 +134,6 @@ function displayProduit(productsInBasket,fObjectId, fObjectColor, fObjectQuantit
   productPDelete.classList.add("deleteItem");
   productPDelete.textContent = "Supprimer";
 
-  /*totalQuantityOfBasket();
-  totalOfBasket();*/
 };
 //affichage et calcul total quantity
 function totalQuantityOfBasket (){
