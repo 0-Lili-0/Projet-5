@@ -179,34 +179,24 @@ function totalOfBasket(productsInBasket, fObjectQuantity) {
 // fonction supprimer 1 produit du panier
 function deleteProductOfBasket(fObjectId, fObjectColor) {
   const deleteProduct = document.querySelectorAll(".deleteItem");
-  for (let item of deleteProduct) {
+  for (let item of deleteProduct) {    
     item.addEventListener("click", (e)=> {
-      e.preventDefault();
+    e.preventDefault();
       // on remonte jsuqu'au parent
      // let Item2Delete = item.closest(".cart__item");
       //on cherche l'id et la couleur du produit cible
      // let DataIdToDelete = Item2Delete.getAttribute("data-id");
      // let DataColorToDelete = Item2Delete.getAttribute("data.color");
       
-        const idToDeleteFind = basket.filter(p => p.id !== fObjectId && p.color !== fObjectColor)
-        console.log(idToDeleteFind)
-        localStorage.setItem("basket", JSON.stringify(idToDeleteFind));
-      
-      //on cherche l'id et la couleur dans le panier
-      //const idToDeleteFind = basket.filter(p => p.id !== fObjectId && p.color !== fObjectColor);
-      /*if ( DataIdToDelete & DataColorToDelete === idToDeleteFind) {
-
-      } else {
-        
-      }*/
-     //localStorage.setItem("basket", JSON.stringify(idToDeleteFind));
-      //alert("on supprime "+ DataidToDelete + DataColorToDelete)
+     const idToDeleteFind = basket.filter(p => p.id !== fObjectId && p.color !== fObjectColor);
+     console.log(idToDeleteFind);
+     localStorage.setItem("basket", JSON.stringify(idToDeleteFind));
+     
       // rafraichir la page automatiquement
       //window.location.reload();
     });
   };
-  
-};
+}
 
 //----------------------------------------------------------------Partie formulaire -----------------------------------------------------------------------------------------------
 // 1 afficher un message d'erreur si un champs n'est pas rempli correctement
@@ -220,16 +210,16 @@ const btnOrder = document.getElementById("order");
 
 // validation prenom
 function validFirstName() {
-  const prenom = document.getElementById("firstName").value.length
+  const prenom = document.getElementById("firstName").value
   const errorFirstName = document.getElementById("firstNameErrorMsg")
   let regexFirstName = /^[a-zA-z ,.'-]+$/ // a-zA-Z n'importe quelle caractere entre a et z en minuscule ou majuscule |.'- un seul caractère de la liste |+ nombre de fois illimité
 
-  if( regexFirstName.test(prenom)) {
+  if( regexFirstName.test(prenom) == false) {
     errorFirstName.textContent = "Veuillez indiquer votre prénom avec une chaîne de caractère SVP";
     errorFirstName.style.color = "red";
     return false
   } 
-  if( prenom == "") {
+  if( prenom.value == "") {
     errorFirstName.textContent = "Veuillez indiquer votre prénom avec une chaîne de caractère SVP";
     errorFirstName.style.color = "red";
     return false
@@ -242,16 +232,16 @@ function validFirstName() {
 
 // validation nom 
 function validName() {
-  const nom = document.getElementById("lastName").value.length
+  const nom = document.getElementById("lastName").value
   const errorLastName = document.getElementById("lastNameErrorMsg")
   let regexLastName = /^[a-zA-Z ,.'-]+$/ // a-zA-Z n'importe quelle caractere entre a et z en minuscule ou majuscule |.'- un seul caractère de la liste |+ nombre de fois illimité
 
-  if( regexLastName.test(nom)) {
+  if(regexLastName.test(nom) == false ) {
     errorLastName.textContent = "Veuillez indiquer votre nom avec une chaîne de caractère SVP";
     errorLastName.style.color = "red";
     return false
   } 
-  if( nom == "") {
+  if(nom.value == "") {
     errorLastName.textContent = "Veuillez indiquer votre nom avec une chaîne de caractère SVP";
     errorLastName.style.color = "red";
     return false
@@ -264,16 +254,16 @@ function validName() {
 
 // validation adresse
 function validAddress() {
-  const adresse = document.getElementById("address").value.length
+  const adresse = document.getElementById("address").value
   const errorAdress = document.getElementById("addressErrorMsg")
   let regexAddress = /^\s*\S+(?:\s+\S+){2}/ //\s* = n'importe caractèrer espace blanc | \S+ = n'importe quel caractère espace non blanc |(?:\s+\S+){2}= n'importe quel caractère espace non blanc 2 fois 
 
-  if( regexAddress.test(adresse)) {
+  if(regexAddress.test(adresse) == false) {
     errorAdress.textContent = "Veuillez indiquer votre adresse au bon format '26 rue exemple' SVP";
     errorAdress.style.color = "red";
     return false
   } 
-  if( adresse == "") {
+  if(adresse.value == "") {
     errorAdress.textContent = "Veuillez indiquer votre adresse au bon format '26 rue exemple' SVP";
     errorAdress.style.color = "red";
     return false
@@ -287,16 +277,16 @@ function validAddress() {
 
 // validation ville
 function validCity() {
-  const ville = document.getElementById("city").value.length
+  const ville = document.getElementById("city").value
   const errorCity = document.getElementById("cityErrorMsg")
   let regexCity = /^([0-9]{5}) ?([a-zA-Z]*)$/ // ([0-9]{5})= chiffre entre 0-9 5fois de suite | ?([a-A-Z]*)= des caractère minuscule ou majuscule autant que voulu
 
-  if( regexCity.test(ville)) {
+  if(regexCity.test(ville) == false) {
     errorCity.textContent = `Veuillez indiquer votre ville au bon format "codePostal et ville" SVP`;
     errorCity.style.color = "red";
     return false
   } 
-  if( ville =="") {
+  if(ville.value =="") {
     errorCity.textContent = `Veuillez indiquer votre ville au bon format "codePostal et ville" SVP`;
     errorCity.style.color = "red";
     return false
@@ -310,16 +300,16 @@ function validCity() {
 
 // validation email
 function validEmail() {
-  const email = document.getElementById("email").value.length
+  const email = document.getElementById("email").value
   const errorMail = document.getElementById("emailErrorMsg")
   let regexEmail = /^[^@]+@[^@]+\.[^@]+$/ // [^@]=n'importe quel caractere sauf @ | +@[^@]=@ obligatoire et n'importe quel caractère sauf @ | +\.[^@]= un . suivi de n'importe quel caractère sauf @ 
 
-  if( regexEmail.test(email)) {
+  if(regexEmail.test(email) == false) {
     errorMail.textContent = "Veuillez indiquer votre email au bon format 'exemple@test.com' SVP";
     errorMail.style.color = "red";
     return false
   }
-  if( email =="") {
+  if(email.value =="") {
     errorMail.textContent = "Veuillez indiquer votre email au bon format 'exemple@test.com' SVP";
     errorMail.style.color = "red";
     return false
@@ -331,33 +321,14 @@ function validEmail() {
   }
 };
 function checkForm() {
-  if (validFirstName() === false) {
-    alert("formulaire invalide")
-    form.firstName.focus()
-    return false
-  }
-  if (validName() === false) {
-    alert("formulaire invalide")
-    form.lastName.focus()
-    return false
-  }
-  if (validAddress() === false) {
-    alert("formulaire invalide")
-    form.address.focus()
-    return false
-  }
-  if (validCity() === false) {
-    alert("formulaire invalide")
-    form.city.focus()
-    return false
-  }
-  if (validEmail() === false) {
-    alert("formulaire invalide")
-    form.email.focus()
-    return false
-  } else {
-    return true
-  }
+    if (validFirstName() === false || validName() === false || validAddress() === false || validCity() === false || validEmail() === false) {
+      alert("formulaire invalide")
+      return false
+    }
+    else{
+      alert("Votre commande est validée")
+      return true
+    }
 }
 
 //envoie des données dans une requête post
@@ -397,7 +368,7 @@ const products = basket.map(produits => produits.id)
       
         //si envoie ok recupérer numero commande et envoie sur la page confirmation en effacant le localStorage
         if (orderId) {
-        //localStorage.clear()
+        localStorage.clear()
         window.location.href = `confirmation.html?commande=${data.orderId}`
     } else {
       // sinon message d'alerte
