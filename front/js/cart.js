@@ -24,11 +24,14 @@ for( let object of basket) {
     displayProduit(apiProductsInBasket, objectId, objectColor, objectQuantity)
     totalQuantityOfBasket()
     totalOfBasket(apiProductsInBasket, objectQuantity)
-   // changeQuantityOfBasket(objectId, objectColor, objectQuantity)
-    deleteProductOfBasket(objectId, objectColor)
-
+    changeQuantityOfBasket(objectId, objectColor, objectQuantity)
+    deleteProductOfBasket()
   })
-};
+
+}
+
+
+
   // affichage des produits du panier
 function displayProduit(productsInBasket,fObjectId, fObjectColor, fObjectQuantity) {
   // affichage article
@@ -148,55 +151,59 @@ function totalOfBasket(productsInBasket, fObjectQuantity) {
   totalPriceUnit.textContent = resultat; //on renvoie le total du panier dans le html
 };
 //fonction changer quantités depuis la page panier
-/*function changeQuantityOfBasket(fObjectId, fObjectColor, fObjectQuantity) {
+function changeQuantityOfBasket(fObjectId, fObjectColor, fObjectQuantity) {
   const currentQuantity = document.querySelectorAll(".itemQuantity");
-  
-  currentQuantity.addEventListener("change", (f)=> {
-    let quantyModifValue = currentQuantity.value;
-    console.log("La quantité modifier depuis le panier est " + quantyModifValue);
-    
-  }) 
-  
-};*/
-   
-   //evenement pour modifier la valeur de l'input
-    //currentQuantity.addEventListener("change", (e)=> {
-    // on recupere la quantité modifier dans le panier
-     // let quantyModifValue = currentQuantity.valueAsNumber;*/
-     // console.log("La quantité modifier depuis le panier est " + quantyModifValue);
-      // on recherche dans le local storage si la quantité est différente de celle du dom
-     // const resultFind = basket.find((el)=> el.id === objectId && el.color === objectColor);
-     // console.log("contenue :" +resultFind['id'] +resultFind['color'] );
-     // resultFind.quantity = quantyModifValue;
-      // on enregistre la nouvelle valeur dans le local storage
-     // localStorage.setItem("basket", JSON.stringify(basket))
-     // window.location.reload();
-      //console.log("Le nouveau panier est " + JSON.parse(localStorage.getItem("basket")))
-   // })
-   
-   
-
-// fonction supprimer 1 produit du panier
-function deleteProductOfBasket(fObjectId, fObjectColor) {
-  const deleteProduct = document.querySelectorAll(".deleteItem");
-  for (let item of deleteProduct) {    
-    item.addEventListener("click", (e)=> {
-    e.preventDefault();
-      // on remonte jsuqu'au parent
-     // let Item2Delete = item.closest(".cart__item");
-      //on cherche l'id et la couleur du produit cible
-     // let DataIdToDelete = Item2Delete.getAttribute("data-id");
-     // let DataColorToDelete = Item2Delete.getAttribute("data.color");
-      
-     const idToDeleteFind = basket.filter(p => p.id !== fObjectId && p.color !== fObjectColor);
-     console.log(idToDeleteFind);
-     localStorage.setItem("basket", JSON.stringify(idToDeleteFind));
-     
-      // rafraichir la page automatiquement
+  for ( let quantity of currentQuantity) {
+    quantity. addEventListener("change", (q) => {
+      q.preventDefault();
+      updateQuantity();
       //window.location.reload();
-    });
+      return
+    })
+  }  
+} 
+function updateQuantity(productsInBasket, fObjectId, fObjectColor, fObjectQuantity )  {
+  const currentQuantity = document.querySelectorAll(".itemQuantity")
+  for ( let x = 0; x < currentQuantity.length; x++){
+    // on recupere la quantite dans le local storage
+    let quantityToLocalStorage = basket[x].quantity
+    console.log("la quantite dans le LS est : "+quantityToLocalStorage)
+    // on recupere la quantite à modifier dans le panier
+    let quantyModifValue = currentQuantity[x].valueAsNumber
+    console.log("la quantite à modifier depuis le panier est : "+quantyModifValue)
+    // on cherche dans le local storage si la quantite est différente du panier
+    let resultFind = basket.find((el) => el.quantyModifValue !== quantityToLocalStorage)
+    resultFind.quantity = quantyModifValue;
+    // on enregistre la nouvelle valeur dans le local storage
+    localStorage.setItem("basket", JSON.stringify(basket))
+    totalQuantityOfBasket()
+    
+    return
   };
-}
+};
+   
+// fonction supprimer 1 produit du panier
+function deleteProductOfBasket() {
+  const deleteProduct = document.querySelectorAll(".deleteItem");
+  for (let dItem of deleteProduct) {    
+    dItem.addEventListener("click", (e)=> {
+    e.preventDefault();
+    // on remonte jsuqu'au parent
+    let Item2Delete = dItem.closest(".cart__item");
+    //on cherche l'id et la couleur du produit cible
+    let DataIdToDelete = Item2Delete.getAttribute("data-id");
+    let DataColorToDelete = Item2Delete.getAttribute("data.color");
+    // filtre les produits du panier pour ne garder que ceux que l'on veut acheter
+    const idToDeleteFind = basket.filter(p => p.id !== DataIdToDelete || p.color !== DataColorToDelete);
+    console.log(idToDeleteFind);
+    // enregistre dans le local storage
+    localStorage.setItem("basket", JSON.stringify(idToDeleteFind));
+    // rafraichi la page automatiquement
+    window.location.reload();
+    return
+    });
+  };  
+};
 
 //----------------------------------------------------------------Partie formulaire -----------------------------------------------------------------------------------------------
 // 1 afficher un message d'erreur si un champs n'est pas rempli correctement
@@ -204,6 +211,8 @@ function deleteProductOfBasket(fObjectId, fObjectColor) {
       // 1.3 ne pas oublier le message d'erreur si necessaire
 // 2 recuperer et analyser les donées saisie dans le formulaire
 // 3 constituer un objet contact et un tableau de produits
+// 4 envoyer requête post et recuperer orderId
+// 5 supprimer local storage et envoyer sur page confirmation
 
 const form = document.getElementsByClassName("cart__order__form")
 const btnOrder = document.getElementById("order");
@@ -361,11 +370,9 @@ const products = basket.map(produits => produits.id)
         })
       })
       .then((response) => response.json())
-      .then((data) => {
-        
+      .then((data) => {      
       // obtenir le numero de commande depuis l'api
         let orderId = data.orderId;
-      
         //si envoie ok recupérer numero commande et envoie sur la page confirmation en effacant le localStorage
         if (orderId) {
         localStorage.clear()
@@ -374,8 +381,7 @@ const products = basket.map(produits => produits.id)
       // sinon message d'alerte
       alert("Le formulaire est incomplet, merci de le compléter")
     }   
-  })
-  
+  })  
 }
 }
   catch(error){
