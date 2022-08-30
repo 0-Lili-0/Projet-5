@@ -4,8 +4,8 @@
 //3 creer et inseré les elements dans la page
 
 // recupérer les données du local storage et les trier par ID avec la fonction sort(compare)
-let basket = JSON.parse(localStorage.getItem("basket")).sort(compare)
-console.log(basket)
+let basket = JSON.parse(localStorage.getItem("basket"))
+console.table(basket)
 
 // creation d'un tableau pour stocker les prix total de chaque article du panier pour la partie prix total Panier
 total = [] 
@@ -24,7 +24,7 @@ for( let object of basket) {
     displayProduit(apiProductsInBasket, objectId, objectColor, objectQuantity)
     totalQuantityOfBasket()
     totalOfBasket(apiProductsInBasket, objectQuantity)
-    changeQuantityOfBasket(objectId, objectColor, objectQuantity)
+    changeQuantityOfBasket()
     deleteProductOfBasket()
     basket.sort(compare)
   })
@@ -36,9 +36,9 @@ function compare(a, b) {
   const idB = b.id.toUpperCase();
 
   let comparison = 0
-  if (idA > idB) {
+  if (idA != idB) {
     comparison = 1;
-  } else if ( idA < idB) {
+  } else if ( idA == idB) {
     comparison = -1;
   }
   return comparison
@@ -52,7 +52,7 @@ function displayProduit(productsInBasket,fObjectId, fObjectColor, fObjectQuantit
   document.querySelector("#cart__items").appendChild(productArticle);
   productArticle.classList.add("cart__item");
   productArticle.setAttribute("data-id", fObjectId);
-  productArticle.setAttribute("data.color", fObjectColor);
+  productArticle.setAttribute("data-color", fObjectColor);
   
   // div cart item image
   const divImg = document.createElement("div");
@@ -161,36 +161,31 @@ function totalOfBasket(productsInBasket, fObjectQuantity) {
   totalPriceUnit.textContent = resultat; //on renvoie le total du panier dans le html
 };
 //fonction changer quantités depuis la page panier
-function changeQuantityOfBasket(fObjectId, fObjectColor, fObjectQuantity) {
+function changeQuantityOfBasket() {
   const currentQuantity = document.querySelectorAll(".itemQuantity");
   for ( let quantity of currentQuantity) {
     quantity. addEventListener("change", (q) => {
       q.preventDefault();
-      updateQuantity();
-      //window.location.reload();
-      return
-    })
-  }  
-} 
-function updateQuantity(productsInBasket, fObjectId, fObjectColor, fObjectQuantity )  {
-  const currentQuantity = document.querySelectorAll(".itemQuantity")
-  for ( let x = 0; x < currentQuantity.length; x++){
-    // on recupere la quantite dans le local storage
-    let quantityToLocalStorage = basket[x].quantity
-    console.log("la quantite dans le LS est : "+quantityToLocalStorage)
-    // on recupere la quantite à modifier dans le panier
-    let quantyModifValue = currentQuantity[x].valueAsNumber
-    console.log("la quantite à modifier depuis le panier est : "+quantyModifValue)
-    // on cherche dans le local storage si la quantite est différente du panier
-    let resultFind = basket.find((el) => el.quantyModifValue !== quantityToLocalStorage)
-    resultFind.quantity = quantyModifValue;
-    // on enregistre la nouvelle valeur dans le local storage
-    localStorage.setItem("basket", JSON.stringify(basket))
-    totalQuantityOfBasket()
-    
-    return
-  };
-};
+      // on remonte au parent
+      let quantityToChange = quantity.closest("article");
+      // on cherche l'id et la couleur
+      let dataIdToQuantityChange = quantityToChange.getAttribute("data-id");
+      let dataColorQuantityChange = quantityToChange.getAttribute("data-color");
+      // on recupere la quantite dans le local storage
+      const itemToUpdate = basket.find((item) => item.id === dataIdToQuantityChange && item.color === dataColorQuantityChange);
+      // on recupere la quantite à modifier dans le panier
+      const inputValue = quantity.value;
+      let quantyModifValue = inputValue;
+      // on cherche dans le local storage si la quantite est différente du panier
+      itemToUpdate.quantity = quantyModifValue;
+      // on enregistre la nouvelle valeur dans le local storage
+      localStorage.setItem("basket", JSON.stringify(basket));
+      totalQuantityOfBasket();
+      window.location.reload();
+      return;
+    });
+  }; 
+}; 
    
 // fonction supprimer 1 produit du panier
 function deleteProductOfBasket() {
@@ -202,10 +197,9 @@ function deleteProductOfBasket() {
     let Item2Delete = dItem.closest(".cart__item");
     //on cherche l'id et la couleur du produit cible
     let DataIdToDelete = Item2Delete.getAttribute("data-id");
-    let DataColorToDelete = Item2Delete.getAttribute("data.color");
+    let DataColorToDelete = Item2Delete.getAttribute("data-color");
     // filtre les produits du panier pour ne garder que ceux que l'on veut acheter
     const idToDeleteFind = basket.filter(p => p.id !== DataIdToDelete || p.color !== DataColorToDelete);
-    console.log(idToDeleteFind);
     // enregistre dans le local storage
     localStorage.setItem("basket", JSON.stringify(idToDeleteFind));
     // rafraichi la page automatiquement
@@ -224,13 +218,13 @@ function deleteProductOfBasket() {
 // 4 envoyer requête post et recuperer orderId
 // 5 supprimer local storage et envoyer sur page confirmation
 
-const form = document.getElementsByClassName("cart__order__form")
+const form = document.getElementsByClassName("cart__order__form");
 const btnOrder = document.getElementById("order");
 
 // validation prenom
 function validFirstName() {
-  const prenom = document.getElementById("firstName").value
-  const errorFirstName = document.getElementById("firstNameErrorMsg")
+  const prenom = document.getElementById("firstName").value;
+  const errorFirstName = document.getElementById("firstNameErrorMsg");
   let regexFirstName = /^[a-zA-z ,.'-]+$/ // a-zA-Z n'importe quelle caractere entre a et z en minuscule ou majuscule |.'- un seul caractère de la liste |+ nombre de fois illimité
 
   if( regexFirstName.test(prenom) == false) {

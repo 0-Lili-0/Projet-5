@@ -4,7 +4,6 @@ fetch("http://localhost:3000/api/products")
         .then(data => { 
 // creation boucle pour voir tous les produits
     for (let element of data) {
-        console.log(element)
         ajoutProduits(element)
     }
     })
