@@ -4,8 +4,7 @@
 //3 creer et inseré les elements dans la page
 
 // recupérer les données du local storage et les trier par ID avec la fonction sort(compare)
-let basket = JSON.parse(localStorage.getItem("basket"))
-console.table(basket)
+let basket = JSON.parse(localStorage.getItem("basket"));
 
 // creation d'un tableau pour stocker les prix total de chaque article du panier pour la partie prix total Panier
 total = [] 
@@ -21,28 +20,15 @@ for( let object of basket) {
   .then(data => {
     const apiProductsInBasket = data;
       
-    displayProduit(apiProductsInBasket, objectId, objectColor, objectQuantity)
-    totalQuantityOfBasket()
-    totalOfBasket(apiProductsInBasket, objectQuantity)
-    changeQuantityOfBasket()
-    deleteProductOfBasket()
-    basket.sort(compare)
-  })
+    displayProduit(apiProductsInBasket, objectId, objectColor, objectQuantity);
+    totalQuantityOfBasket();
+    totalOfBasket(apiProductsInBasket, objectQuantity);
+    changeQuantityOfBasket();
+    deleteProductOfBasket();
+    basket.sort(compare);
+  });
 
-}
-// tri des articles en fonction de l'id
-function compare(a, b) {
-  const idA = a.id.toUpperCase();
-  const idB = b.id.toUpperCase();
-
-  let comparison = 0
-  if (idA != idB) {
-    comparison = 1;
-  } else if ( idA == idB) {
-    comparison = -1;
-  }
-  return comparison
-}
+};
 
   // affichage des produits du panier
 function displayProduit(productsInBasket,fObjectId, fObjectColor, fObjectQuantity) {
@@ -230,117 +216,117 @@ function validFirstName() {
   if( regexFirstName.test(prenom) == false) {
     errorFirstName.textContent = "Veuillez indiquer votre prénom avec une chaîne de caractère SVP";
     errorFirstName.style.color = "red";
-    return false
+    return false;
   } 
   if( prenom.value == "") {
     errorFirstName.textContent = "Veuillez indiquer votre prénom avec une chaîne de caractère SVP";
     errorFirstName.style.color = "red";
-    return false
+    return false;
   } else {
     errorFirstName.textContent = "Votre prénom est au bon format";
     errorFirstName.style.color = "green";
-    return true
+    return true;
   }
 }
 
 // validation nom 
 function validName() {
-  const nom = document.getElementById("lastName").value
-  const errorLastName = document.getElementById("lastNameErrorMsg")
+  const nom = document.getElementById("lastName").value;
+  const errorLastName = document.getElementById("lastNameErrorMsg");
   let regexLastName = /^[a-zA-Z ,.'-]+$/ // a-zA-Z n'importe quelle caractere entre a et z en minuscule ou majuscule |.'- un seul caractère de la liste |+ nombre de fois illimité
 
   if(regexLastName.test(nom) == false ) {
     errorLastName.textContent = "Veuillez indiquer votre nom avec une chaîne de caractère SVP";
     errorLastName.style.color = "red";
-    return false
+    return false;
   } 
   if(nom.value == "") {
     errorLastName.textContent = "Veuillez indiquer votre nom avec une chaîne de caractère SVP";
     errorLastName.style.color = "red";
-    return false
+    return false;
   }else {
     errorLastName.textContent = "Votre nom est au bon format";
     errorLastName.style.color = "green";
-    return true
+    return true;
   }
 }
 
 // validation adresse
 function validAddress() {
-  const adresse = document.getElementById("address").value
-  const errorAdress = document.getElementById("addressErrorMsg")
+  const adresse = document.getElementById("address").value;
+  const errorAdress = document.getElementById("addressErrorMsg");
   let regexAddress = /^\s*\S+(?:\s+\S+){2}/ //\s* = n'importe caractèrer espace blanc | \S+ = n'importe quel caractère espace non blanc |(?:\s+\S+){2}= n'importe quel caractère espace non blanc 2 fois 
 
   if(regexAddress.test(adresse) == false) {
     errorAdress.textContent = "Veuillez indiquer votre adresse au bon format '26 rue exemple' SVP";
     errorAdress.style.color = "red";
-    return false
+    return false;
   } 
   if(adresse.value == "") {
     errorAdress.textContent = "Veuillez indiquer votre adresse au bon format '26 rue exemple' SVP";
     errorAdress.style.color = "red";
-    return false
+    return false;
   }
   else {
     errorAdress.textContent = "Votre adresse est au bon format";
     errorAdress.style.color = "green";
-    return true
+    return true;
   }
 }
 
 // validation ville
 function validCity() {
-  const ville = document.getElementById("city").value
-  const errorCity = document.getElementById("cityErrorMsg")
+  const ville = document.getElementById("city").value;
+  const errorCity = document.getElementById("cityErrorMsg");
   let regexCity = /^([0-9]{5}) ?([a-zA-Z]*)$/ // ([0-9]{5})= chiffre entre 0-9 5fois de suite | ?([a-A-Z]*)= des caractère minuscule ou majuscule autant que voulu
 
   if(regexCity.test(ville) == false) {
     errorCity.textContent = `Veuillez indiquer votre ville au bon format "codePostal et ville" SVP`;
     errorCity.style.color = "red";
-    return false
+    return false;
   } 
   if(ville.value =="") {
     errorCity.textContent = `Veuillez indiquer votre ville au bon format "codePostal et ville" SVP`;
     errorCity.style.color = "red";
-    return false
+    return false;
   }
   else {
     errorCity.textContent = "Votre ville est au bon format";
     errorCity.style.color = "green";
-    return true
+    return true;
   }
 }
 
 // validation email
 function validEmail() {
-  const email = document.getElementById("email").value
-  const errorMail = document.getElementById("emailErrorMsg")
+  const email = document.getElementById("email").value;
+  const errorMail = document.getElementById("emailErrorMsg");
   let regexEmail = /^[^@]+@[^@]+\.[^@]+$/ // [^@]=n'importe quel caractere sauf @ | +@[^@]=@ obligatoire et n'importe quel caractère sauf @ | +\.[^@]= un . suivi de n'importe quel caractère sauf @ 
 
   if(regexEmail.test(email) == false) {
     errorMail.textContent = "Veuillez indiquer votre email au bon format 'exemple@test.com' SVP";
     errorMail.style.color = "red";
-    return false
+    return false;
   }
   if(email.value =="") {
     errorMail.textContent = "Veuillez indiquer votre email au bon format 'exemple@test.com' SVP";
     errorMail.style.color = "red";
-    return false
+    return false;
   }
   else {
     errorMail.textContent = "Votre email est correcte";
     errorMail.style.color = "green";
-    return true
+    return true;
   }
 };
 function checkForm() {
     if (validFirstName() === false || validName() === false || validAddress() === false || validCity() === false || validEmail() === false) {
       alert("formulaire invalide")
-      return false
+      return false;
     }
     else{
       alert("Votre commande est validée")
-      return true
+      return true;
     }
 }
 
@@ -356,10 +342,10 @@ btnOrder.addEventListener("click", (e)=> {
 };
 
 // creation tableau produits
-const products = basket.map(produits => produits.id)
+const products = basket.map(produits => produits.id);
 
   try {
-    e.preventDefault()
+    e.preventDefault();
     if (checkForm() === true) {
       // envoie requete post
       fetch(`http://localhost:3000/api/products/order`,{
@@ -383,13 +369,13 @@ const products = basket.map(produits => produits.id)
         window.location.href = `confirmation.html?commande=${data.orderId}`
     } else {
       // sinon message d'alerte
-      alert("Le formulaire est incomplet, merci de le compléter")
+      alert("Le formulaire est incomplet, merci de le compléter");
     }   
   })  
 }
 }
   catch(error){
-    console.log("erreur")
+    console.log("erreur");
   }
 })
 

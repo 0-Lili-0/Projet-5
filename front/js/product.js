@@ -1,76 +1,75 @@
 //----------------------------------------------------------- Affichage du Produit ----------------------------------------------------------------------------------
 // recupération id d'un produit
 const getProductId = new URL(window.location.href).searchParams.get("id");
-console.log(" voici l'id du produit " + getProductId)
+console.log(" voici l'id du produit " + getProductId);
 
 // recupérer les données d'un produits à partir de l'id
 fetch(`http://localhost:3000/api/products/${getProductId}`)
     .then (response => response.json())
     .then (product => {
-        console.log(product);
-        displayData(product)
+        displayData(product);
     });
 
 // Affichage des infos du produits
 function affichageProduit(element) {
-let image = document.querySelector("item__img")
-let titre = document.querySelector("title")
-let prix = document.querySelector("price")
-let description = document.querySelector("description")
-let options = document.querySelector("colors")
+let image = document.querySelector("item__img");
+let titre = document.querySelector("title");
+let prix = document.querySelector("price");
+let description = document.querySelector("description");
+let options = document.querySelector("colors");
 
 }
 
 
 // affichage des produits
 function displayData(object) {
-    const id = object._id
-    const altTxt = object.altTxt
-    const imageUrl = object.imageUrl
-    const name = object.name
-    const description = object.description
-    const price = object.price
-    const colors = object.colors
+    const id = object._id;
+    const altTxt = object.altTxt;
+    const imageUrl = object.imageUrl;
+    const name = object.name;
+    const description = object.description;
+    const price = object.price;
+    const colors = object.colors;
 
-    createImage(imageUrl, altTxt)
-    createTitle(name)
-    createPrice(price)
-    createDescription(description)
-    createColors(colors)
+    createImage(imageUrl, altTxt);
+    createTitle(name);
+    createPrice(price);
+    createDescription(description);
+    createColors(colors);
 }
 // creation de l'image
 function createImage(imageUrl, altTxt) {
-    const image = document.createElement('img')
-    image.src = imageUrl
-    image.alt = altTxt
-    const img = document.querySelector(".item__img")
-    if ( img != null) img.appendChild(image)
+    const image = document.createElement('img');
+    image.src = imageUrl;
+    image.alt = altTxt;
+    const img = document.querySelector(".item__img");
+    if ( img != null) img.appendChild(image);
 }
 // creation du nom produit
 function createTitle(name) {
-    const h1 = document.querySelector("#title")
-    if (h1 != null) h1.textContent = name
+    const h1 = document.querySelector("#title");
+    if (h1 != null) h1.textContent = name;
 }
 //cretation prix produit
 function createPrice(price) {
-    const span = document.querySelector("#price")
-    if (span != null) span.textContent = price
+    const span = document.querySelector("#price");
+    if (span != null) span.textContent = price;
 }
 //creation description produit
 function createDescription(description) {
-    const p = document.querySelector("#description")
-    if (p != null) p.textContent = description
+    const p = document.querySelector("#description");
+    if (p != null) p.textContent = description;
 }
 // creation couleur
 function createColors(colors) {
-    const select = document.querySelector("#colors")
+    const select = document.querySelector("#colors");
     if (select != null ) {
         //creation boucle pour le choix des couleurs
         colors.forEach(color => {
-            const option = document.createElement("option")
-            option.value = color
-            option.textContent = color
-            select.appendChild(option)
+            const option = document.createElement("option");
+            option.value = color;
+            option.textContent = color;
+            select.appendChild(option);
         });
     }
 }
@@ -78,15 +77,15 @@ function createColors(colors) {
 
 // ----------------------------------------- gestion bouton ajout aux panier et localStorage-----------------------------------------------------------------------------------------------
 //click du bouton
-const btn = document.querySelector("#addToCart")
+const btn = document.querySelector("#addToCart");
 btn.addEventListener("click", (e) => {
     const id = getProductId;
-    const color = document.querySelector("#colors").value
-    const quantity = document.querySelector("#quantity").value
+    const color = document.querySelector("#colors").value;
+    const quantity = document.querySelector("#quantity").value;
     // rendre impossible de cliquer sur bouton si couleur et quantité sont non renseignées
     if(color == null || color ==='' || quantity == null || quantity == 0){
-        alert("Veuillez choisir une couleur et indiquer une quantité S.V.P.")
-        return // faire arreter la fonction afin de ne pas etre envoyer sur la page panier
+        alert("Veuillez choisir une couleur et indiquer une quantité S.V.P.");
+        return; // faire arreter la fonction afin de ne pas etre envoyer sur la page panier
     }
 //localstorage pour garder en mémoire données dans un tableau 
     
@@ -95,7 +94,7 @@ let data = {
        id: id,
     color: color,
     quantity: quantity
-}
+};
 //1 recupère tableau actuelle
 //2 check si storageContent null ou pas si null initailiser tableau et ajout tableau dans local storage si non recupère tableau et ajouter element dedans
 
@@ -113,7 +112,7 @@ if (retrieveArray !== null) {
             element.quantity = Number(element.quantity) + Number(data.quantity);
             localStorage.setItem("basket", JSON.stringify(retrieveArray));
             IndiceTest = 1;
-            break
+            break;
         // sinon on change variable    
         } else {
             IndiceTest = 2;
@@ -131,7 +130,7 @@ else{
     localStorage.setItem("basket", JSON.stringify(retrieveArray));
 };
 // renvoie vers la page panier
-window.location.href = "cart.html" 
+window.location.href = "cart.html"; 
 });
    
 
