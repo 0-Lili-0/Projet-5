@@ -294,8 +294,8 @@ function validCity() {
     errorCity.textContent = "Votre ville est au bon format";
     errorCity.style.color = "green";
     return true;
-  }
-}
+  };
+};
 
 // validation email
 function validEmail() {
@@ -317,7 +317,7 @@ function validEmail() {
     errorMail.textContent = "Votre email est correcte";
     errorMail.style.color = "green";
     return true;
-  }
+  };
 };
 function checkForm() {
     if (validFirstName() === false || validName() === false || validAddress() === false || validCity() === false || validEmail() === false) {
@@ -325,10 +325,16 @@ function checkForm() {
       return false;
     }
     else{
-      alert("Votre commande est validée")
+      //alert("Votre commande est validée")
       return true;
-    }
-}
+    };
+};
+// verification au changement de champs
+document.getElementById("firstName").addEventListener("focusout", validFirstName);
+document.getElementById("lastName").addEventListener("focusout", validName);
+document.getElementById("address").addEventListener("focusout", validAddress);
+document.getElementById("city").addEventListener("focusout", validCity);
+document.getElementById("email").addEventListener("focusout", validEmail);
 
 //envoie des données dans une requête post
 btnOrder.addEventListener("click", (e)=> {
@@ -370,14 +376,14 @@ const products = basket.map(produits => produits.id);
     } else {
       // sinon message d'alerte
       alert("Le formulaire est incomplet, merci de le compléter");
-    }   
-  })  
-}
+    };   
+  });  
+};
 }
   catch(error){
     console.log("erreur");
-  }
-})
+  };
+});
 
  
   

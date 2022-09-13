@@ -10,17 +10,6 @@ fetch(`http://localhost:3000/api/products/${getProductId}`)
         displayData(product);
     });
 
-// Affichage des infos du produits
-function affichageProduit(element) {
-let image = document.querySelector("item__img");
-let titre = document.querySelector("title");
-let prix = document.querySelector("price");
-let description = document.querySelector("description");
-let options = document.querySelector("colors");
-
-}
-
-
 // affichage des produits
 function displayData(object) {
     const id = object._id;
@@ -79,7 +68,6 @@ function createColors(colors) {
 //click du bouton
 const btn = document.querySelector("#addToCart");
 btn.addEventListener("click", (e) => {
-    const id = getProductId;
     const color = document.querySelector("#colors").value;
     const quantity = document.querySelector("#quantity").value;
     // rendre impossible de cliquer sur bouton si couleur et quantité sont non renseignées
@@ -91,7 +79,7 @@ btn.addEventListener("click", (e) => {
     
 // creation de l'objet à stocker dans le local storage
 let data = {
-       id: id,
+       id: getProductId,
     color: color,
     quantity: quantity
 };
